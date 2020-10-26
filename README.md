@@ -1,5 +1,5 @@
 # jobsystem
-
+使用Vue+ElementUI构建的求职平台 
 ## Project setup
 ```
 npm install
@@ -9,7 +9,10 @@ npm install
 ```
 npm run serve
 ```
-
+or
+```
+npm start
+```
 ### Compiles and minifies for production
 ```
 npm run build

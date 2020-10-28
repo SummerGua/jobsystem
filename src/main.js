@@ -5,7 +5,7 @@ import router from './router'
 import './plugins/element.js'
 import axios from 'axios'
 import store from './store/store.js'
-
+import guards from './router/guards.js'
 require('./mock')
 
 Vue.prototype.$http = axios.create({
@@ -15,32 +15,11 @@ Vue.prototype.$http = axios.create({
 })
 Vue.config.productionTip = false
 
-router.beforeEach(function(to,from,next){
-  if(to.meta.needLogin){
-    if(localStorage.getItem("token")&&store.state.isLogin===true){
-      next()
-    }else{
-      next({
-        name: 'Login'
-      })
-    }
-  }else{
-    next()
-  }
-  if(to.meta.noNeedLogin){
-    if(store.state.isLogin===false){
-      next()
-    }else{
-      next({
-        name: 'Home'
-      })
-    }
-    
-  }
-})
+
 
 new Vue({
   router,
+  guards,
   store,
   render: h => h(App)
 }).$mount('#app')

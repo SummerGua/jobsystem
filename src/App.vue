@@ -1,20 +1,19 @@
 <template>
   <div id="app">
-    <router-link to="/">index</router-link>
-     <router-link to="/login">Go to Login</router-link>
-    <router-link to="/about">Go to Bar</router-link>
+    <Nav></Nav>
+    
     <router-view></router-view>
     
   </div>
 </template>
 
 <script>
-
+import Nav from './components/Nav'
 
 export default {
   name: 'app',
   components: {
-    
+    Nav
   }
 }
 </script>

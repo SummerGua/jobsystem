@@ -1,19 +1,19 @@
 <template>
-  <div class="login">
-    <LoginForm></LoginForm>
+  <div class="upload">
+    <ResumeForm></ResumeForm>
   </div>
 </template>
 <script>
-import LoginForm from '../components/LoginForm.vue'
+import ResumeForm from '../components/ResumeForm.vue'
 export default {
   components:{
-    LoginForm
+    ResumeForm
   }
+  
 }
 </script>
 <style scoped>
-.login{
+.upload{
   margin-top: 80px;
-
 }
 </style>

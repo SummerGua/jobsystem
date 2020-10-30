@@ -13,6 +13,9 @@ export default {
 }
 </script>
 <style scoped>
+h1{
+  margin: 0;
+}
 .upload{
   margin-top: 80px;
 }

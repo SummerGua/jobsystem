@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <Nav></Nav>
+    <transition name="fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
     
-    <router-view></router-view>
     
   </div>
 </template>
@@ -25,5 +27,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.fade-enter{
+  opacity: 0;
+}
+.fade-leave{
+  opacity: 1;
+}
+.fade-leave-active{
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.fade-enter-active{
+  transition: opacity 0.4s;
 }
 </style>

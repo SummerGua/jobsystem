@@ -9,13 +9,11 @@ import guards from './router/guards.js'
 require('./mock')
 
 Vue.prototype.$http = axios.create({
-  baseURL: '/', //测试用
+  baseURL: '/',  //测试用
   timeout: 5000, //请求超时时间
   withCredentials: true
 })
 Vue.config.productionTip = false
-
-
 
 new Vue({
   router,

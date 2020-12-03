@@ -8,6 +8,9 @@
       size="medium"
       :hide-required-asterisk=true
     >
+    <el-form-item label="身份">
+      <el-switch v-model="role" active-text="求职者" inactive-text="招聘者"></el-switch>
+      </el-form-item>
       <el-form-item label="用户名" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
@@ -45,6 +48,7 @@ export default {
           password: '123123',
           checkpassword: '123123'
       },
+      role: true,
       rules: {
         name: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -92,5 +96,6 @@ export default {
 .register-form{
   width: 500px;
   margin: 0 auto;
+  padding-top: 20px;
 }
 </style>

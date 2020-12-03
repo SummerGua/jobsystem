@@ -2,3 +2,6 @@ body,html{
     margin: 0 auto;
     padding: 0;
 }
+li{
+    list-style: none;
+}

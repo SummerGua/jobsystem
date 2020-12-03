@@ -4,8 +4,9 @@ Mock.mock('/api/login','post', {
         username: Mock.Random.cname(),
         message: 'success',
         code: 0,
-        uid: 123123
+        uid: 123123,
     }
+
 })
 Mock.mock('/api/register','post', {
     "registerInfo": { 
@@ -13,5 +14,10 @@ Mock.mock('/api/register','post', {
         code: 0,
         uid: 123123,
         username: Mock.Random.cname()
+    }
+})
+Mock.mock('/api/saveResume', 'post', {
+    "saveResult": {
+        code: 0
     }
 })

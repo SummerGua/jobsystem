@@ -24,7 +24,8 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
+import Cookies from "js-cookie"
+import axios from 'axios'
 export default {
   name: "LoginForm",
   data() {
@@ -69,10 +70,12 @@ export default {
         });
         console.log(res);
         if (res.userInfo.code == 0) {
-          this.$message.success("登录成功");
-          Cookies.set("username", res.userInfo.username);
-          localStorage.setItem("token", res.userInfo.uid);
-          this.$store.state.username = res.userInfo.username;
+          this.$message.success("登录成功")
+          Cookies.set("username", res.userInfo.username)
+          let token = res.userInfo.uid;
+          localStorage.setItem("token", token)
+          axios.defaults.headers.common['Authorization'] = token
+          this.$store.state.username = res.userInfo.username
           this.$store.state.isLogin = true
           this.$router.push("/");
         } else {
@@ -92,5 +95,6 @@ export default {
 .login-form {
   width: 500px;
   margin: 0 auto;
+  padding-top: 20px;
 }
 </style>

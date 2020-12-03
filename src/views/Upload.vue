@@ -16,7 +16,4 @@ export default {
 h1{
   margin: 0;
 }
-.upload{
-  margin-top: 80px;
-}
 </style>

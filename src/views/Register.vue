@@ -13,7 +13,5 @@ export default {
 }
 </script>
 <style scoped>
-.register{
-  margin-top: 80px;
-}
+
 </style>

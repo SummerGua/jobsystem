@@ -9,9 +9,22 @@
           item.name
         }}</router-link>
       </div>
+      
       <div v-show="this.$store.state.isLogin" class="info">
+        <router-link to="/message"><a>消息</a></router-link>
         <router-link to="/upload"><a>上传简历</a></router-link>
         <a>{{this.$store.state.username}}</a>
+        <div class="my">
+        <el-dropdown trigger="click">
+        <span class="el-dropdown-link">
+          我的<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item >我的简历</el-dropdown-item>
+          <el-dropdown-item >投递进度</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      </div>
         <a @click="logout">退出登录</a>
       </div>
     </div>
@@ -56,8 +69,7 @@ export default {
   padding: 0;
 }
 .nav {
-  position: absolute;
-  top: 0;
+  
   width: 100%;
   height: 49px;
   background-color: #409eff;
@@ -65,7 +77,7 @@ export default {
 }
 
 .nav-inner {
-  width: 1184px;
+  padding-right: 20px;
   line-height: 49px;
   position: relative;
 }
@@ -78,6 +90,7 @@ a:hover {
 }
 .logo {
   float: left;
+  padding-left: 20px;
 }
 .function {
   float: right;
@@ -93,5 +106,9 @@ a:hover {
 }
 .info a:hover {
   cursor: pointer;
+}
+.my{
+  width: 80px;
+  margin: 0;
 }
 </style>

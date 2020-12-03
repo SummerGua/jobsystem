@@ -10,8 +10,8 @@ const guards = router.beforeEach(function(to,from,next){
       })
     }
   }
-  else if(to.meta.noNeedLogin){
-    if(store.state.isLogin===true){
+  if(to.meta.noNeedLogin){
+    if(store.state.isLogin){
       next({
         name: 'Home'
       })

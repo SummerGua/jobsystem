@@ -1,18 +1,16 @@
 <template>
-  <div class="home">
-    <h1>主页</h1>
+  <div class="">
+    <Message></Message>
   </div>
 </template>
 <script>
-
+import Message from '../components/Message.vue'
 export default {
   components:{
-    
+    Message
   }
 }
 </script>
 <style scoped>
-.home{
-  height: 100%;
-}
+
 </style>

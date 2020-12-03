@@ -3,7 +3,8 @@ import Vuex from 'vuex';
 Vue.use(Vuex)
 let state = {
   username: '',
-  isLogin: false
+  isLogin: false,
+  isStu: true,
 }
 export default new Vuex.Store({
 	

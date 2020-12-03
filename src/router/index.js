@@ -32,7 +32,14 @@ const routes = [
       needLogin: true
     },
     component: () => import('../views/Upload.vue')
-  }
+  },
+  {
+    path: '/message',
+    name: 'Message',
+    meta: {
+      needLogin: true
+    },
+    component: () => import('../views/Message.vue')}
 ]
 
 const router = new VueRouter({

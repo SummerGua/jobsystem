@@ -1,39 +1,41 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="side-bar">
-        <div class="title">消息中心</div>
-        <ul>
-          <li class="font-active">我的消息</li>
-          <li>收到的赞</li>
-          <li>回复我的</li>
-          <li>系统通知</li>
-        </ul>
+
+  <div class="container">
+    <div class="msg-container">
+    <div class="side-bar">
+      <div class="title">消息中心</div>
+      <ul>
+        <li class="font-active">我的消息</li>
+        <li>收到的赞</li>
+        <li>回复我的</li>
+        <li>系统通知</li>
+      </ul>
+    </div>
+    <div class="right-part">
+      <div class="msg-top-bar">
+        <span>我的消息</span>
+        <span>设置</span>
       </div>
-      <div class="right-part">
-        <div class="msg-top-bar">
-          <span>我的消息</span>
-          <span>设置</span>
+      <div class="msg-box">
+        <div class="left">
+        <div class="recent-msg">
+          <span>近期消息</span>
         </div>
-        <div class="msg-box">
-          <div class="left">
-          <div class="recent-msg">
-            <span>近期消息</span>
-          </div>
-          <div v-for="item in nameList" :key="item.id" :class="{active:item.id===isActive}" @click="changeClass(item.id)" class="list-item">
-            {{ item.name }}
-          </div>
-          </div>
-          <div class="right">
-            <div class="msg-title"><span>{{nameList[0].name}}</span></div>
-            <div class="msg-list"></div>
-            <div class="send-box"></div>
-          </div>
+        <div v-for="item in nameList" :key="item.id" :class="{active:item.id===isActive}" @click="changeClass(item.id)" class="list-item">
+          {{ item.name }}
         </div>
-        
+        </div>
+        <div class="right">
+          <div class="msg-title"><span>{{nameList[isActive].name}}</span></div>
+          <div class="msg-list"></div>
+          <div class="send-box"></div>
+        </div>
       </div>
+      
+    </div>
     </div>
   </div>
+
 </template>
 <script>
 import {getOthersName} from '../plugins/request'
@@ -78,10 +80,14 @@ export default {
 .container{
   max-width: 1143px;
   margin: 0 auto;
-  display: flex;
   font-weight: 700;
   height: calc(100vh - 49px);
   color: #666;
+}
+.msg-container{
+  display: flex;
+  height: calc(100vh - 49px);
+  position: absolute;
 }
 .title{
   color: #333;

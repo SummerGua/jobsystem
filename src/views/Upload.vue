@@ -1,5 +1,5 @@
 <template>
-  <div class="upload">
+  <div class="form">
     <ResumeForm></ResumeForm>
   </div>
 </template>
@@ -13,7 +13,5 @@ export default {
 }
 </script>
 <style scoped>
-h1{
-  margin: 0;
-}
+
 </style>

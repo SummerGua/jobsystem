@@ -73,7 +73,8 @@ export default {
           this.$message.success("登录成功")
           Cookies.set("username", res.userInfo.username)
           let token = res.userInfo.uid;
-          localStorage.setItem("token", token)
+          sessionStorage.setItem("token", token)
+          sessionStorage.setItem("username",res.userInfo.username)
           axios.defaults.headers.common['Authorization'] = token
           this.$store.state.username = res.userInfo.username
           this.$store.state.isLogin = true

@@ -1,5 +1,11 @@
+import Cookies from "js-cookie"
+
 export function getToken(){
-  return localStorage.getItem("token")
+  if(Cookies.get('token')){    //判断是否有token
+    return Cookies.get("token")
+  }else{
+    return
+  }
 }
 
 export function getOthersName(){

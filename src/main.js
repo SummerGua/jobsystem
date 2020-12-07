@@ -14,9 +14,8 @@ Vue.prototype.$http = axios.create({
   timeout: 5000, //请求超时时间
   withCredentials: true, //跨域
   headers: { 'token': getToken() }
-  
-  
 })
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -1,18 +1,19 @@
 <template>
   <div class="home">
-    <h1>主页</h1>
+    <Home></Home>
   </div>
 </template>
 <script>
-
+import Home from '../components/Home'
 export default {
   components:{
-    
+    Home
   }
 }
 </script>
 <style scoped>
 .home{
   height: 100%;
+  width:100%;
 }
 </style>

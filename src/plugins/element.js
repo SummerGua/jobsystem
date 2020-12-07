@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button,Form,FormItem,Input,Alert,Message,Radio,DatePicker,Select,Option,Switch,Dropdown,DropdownItem,DropdownMenu } from 'element-ui'
+import { Button,Dialog,MessageBox,Form,FormItem,Input,Alert,Message,Radio,DatePicker,Select,Option,Switch,Dropdown,DropdownItem,DropdownMenu } from 'element-ui'
 
 Vue.use(Button)
 Vue.use(FormItem)
@@ -14,4 +14,6 @@ Vue.use(Switch)
 Vue.use(Dropdown)
 Vue.use(DropdownItem)
 Vue.use(DropdownMenu)
+Vue.use(Dialog)
 Vue.prototype.$message = Message
+Vue.prototype.$prompt = MessageBox

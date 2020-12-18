@@ -39,7 +39,16 @@ const routes = [
     meta: {
       needLogin: true
     },
-    component: () => import('../views/Message.vue')}
+    component: () => import('../views/Message.vue')
+  },
+  {
+    path: '/myresumes',
+    name: 'MyResumes',
+    meta:{
+      needLogin: true
+    },
+    component: ()=> import('../views/MyResumes.vue')
+  }
 ]
 
 const router = new VueRouter({

@@ -19,8 +19,12 @@
               {{this.$store.state.username}}
             </span>
             <el-dropdown-menu  slot="dropdown">
-              <el-dropdown-item class="item">我的简历</el-dropdown-item>
-              <el-dropdown-item class="item">投递进度</el-dropdown-item>
+              <router-link to="myresumes">
+                <el-dropdown-item class="item">
+                我的简历
+                </el-dropdown-item>
+              </router-link>
+              
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -49,7 +53,7 @@ export default {
       this.$store.state.isLogin = false;
       Cookies.remove('username');
       this.$router.push("/login");
-    },
+    }
   },
 };
 </script>

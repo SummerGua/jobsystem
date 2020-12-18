@@ -42,7 +42,6 @@ export default {
   transition: opacity 0.4s;
 }
 .router-view{
-  min-height: calc(100vh - 49px);
   width: 100%;
 }
 </style>

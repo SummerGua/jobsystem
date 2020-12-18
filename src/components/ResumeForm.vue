@@ -227,20 +227,15 @@ export default {
         }
       })
     },
-    changeResumeName(){
-      
-
-
-    }
   },
   beforeCreate () {
 	// 修改背景色
     document.querySelector('body').setAttribute('style', 'background-color:#f1f1f1')
-},
-beforeDestroy () {
+  },
+  beforeDestroy () {
 	// 销毁背景色
-   document.querySelector('body').removeAttribute('style')
-}
+    document.querySelector('body').removeAttribute('style')
+  }
 }
 </script>
 <style scoped>

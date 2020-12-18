@@ -1,6 +1,11 @@
 import Vue from 'vue'
-import { Button,Dialog,MessageBox,Form,FormItem,Input,Alert,Message,Radio,DatePicker,Select,Option,Switch,Dropdown,DropdownItem,DropdownMenu } from 'element-ui'
+import { Table,Pagination,Button,Dialog,MessageBox,Form,FormItem,
+  Input,Alert,Message,Radio,DatePicker,Select,Option,Switch,Dropdown,
+  DropdownItem,DropdownMenu,TableColumn } from 'element-ui'
 
+Vue.use(TableColumn)
+Vue.use(Table)
+Vue.use(Pagination)
 Vue.use(Button)
 Vue.use(FormItem)
 Vue.use(Form)

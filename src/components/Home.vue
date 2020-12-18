@@ -12,6 +12,24 @@
       <a v-show="isCom">热门公司</a>
       <a v-show="!isCom">热门职位</a>
     </div>
+    <div class="all-companies">
+      <div class="one-company" v-for="item in coms" :key="item.id">
+        <div class="pic">
+          <img :src="item.src">
+        </div>
+        <div class="one-right">
+          <div class="com-name">{{item.name}}</div>
+          <div class="info">{{item.info}}</div>
+        </div>
+      </div>
+    <div class="page">
+      <el-pagination layout="prev, pager, next"
+      :page-size=12
+      :total=12>
+      </el-pagination>  
+    </div>
+    </div>
+    
     <!-- <div class="jobs">
       <div class="job-box" v-for="item in jobs" :key="item.id">
 
@@ -25,7 +43,8 @@ export default {
     return{
       search: '',
       isCom: true,
-      placeholder: ['请输入你感兴趣的公司','请输入你感兴趣的职位']
+      placeholder: ['请输入你感兴趣的公司','请输入你感兴趣的职位'],
+      coms:[]
     }
   },
   methods:{
@@ -35,10 +54,25 @@ export default {
       this.placeholder[0] = this.placeholder[1]
       this.placeholder[1] = tmp
     }
-  }
+  },
+  beforeCreate(){
+    this.$http.get("api/getComs").then(
+        res=>{
+          console.log(res.data.data[0])
+          for(let i=0;i<res.data.data.length;i++)
+            this.$set(this.coms,i,res.data.data[i])
+          }
+        )
+  },
+  mounted(){
+    console.log('coms[1]',this.coms[1])
+  } 
 }
 </script>
 <style scoped>
+.page{
+  margin: 0 auto;
+}
 .search{
   display: flex;
   font-size: 14px;
@@ -88,6 +122,48 @@ export default {
 .title{
   margin-top: 20px;
   color: black;
+  font-size: 20px;
+  font-weight: 700;
 }
-
+.all-companies{
+  width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 16px auto 0 auto;
+  overflow: hidden;
+}
+.one-company{
+  height: 80px;
+  width: 265px;
+  padding: 20px 10px;
+}
+.one-company:hover{
+  cursor: pointer;
+  color: #409eff;
+}
+.one-company div{
+  display: block;
+}
+.pic{
+  float: left;
+  width: 80px;
+  height: 80px;
+}
+.com-name{
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 10px;
+}
+.one-right{
+  width: 185px;
+  overflow: hidden;
+  height: 100%;
+}
+.info{
+  overflow: hidden;
+  margin-top: 10px;
+  text-align: left;
+  padding-left: 10px;
+}
 </style>

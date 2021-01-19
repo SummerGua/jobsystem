@@ -1,22 +1,18 @@
 <template>
   <div class="container">
   <div class="resume-form">
-    <div class="top-menu">
+    <div class="top-menu"> 
       <div @click="dialogFormVisible = true" class="menu-name"><span>{{dataForm.menuName}}</span><i class="el-icon-edit edit-icon"></i></div>
-      <el-dialog title="修改简历名称" :visible.sync="dialogFormVisible">
-
-    
-      <el-input v-model="dataForm.menuName" auto-complete="off"></el-input>
-
-
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-  </div>
-</el-dialog>
+      <el-dialog :before-close="controlMenuName" title="修改简历名称" :visible.sync="dialogFormVisible">
+        <el-input v-model="dataForm.menuName" auto-complete="off"></el-input>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false;controlMenuName()">确 定</el-button>
+        </div>
+      </el-dialog>
       <div class="three-function">
         <div>
-      <el-button class="btn" type="primary" @click="previewForm()">预览</el-button>
+      <el-button class="btn" type="primary" @click="previewForm('dataForm')">预览</el-button>
     </div>
     <div>
       <el-button class="btn" type="primary" @click="saveForm('dataForm')">保存</el-button>
@@ -46,22 +42,28 @@
             <el-input placeholder="姓名" v-model="dataForm.name" clearable></el-input>
           </el-form-item>
         </div>
-        <div class="tele ">
-          <el-input placeholder="电话" v-model="dataForm.tele" clearable></el-input>
+        <div class="tele">
+          <el-form-item prop="tele">
+            <el-input placeholder="电话" v-model="dataForm.tele" clearable></el-input>
+          </el-form-item>
         </div>
         <div class="email ">
-          <el-input placeholder="电子邮件" v-model="dataForm.email" clearable></el-input>
+          <el-form-item prop="email">
+            <el-input placeholder="电子邮件" v-model="dataForm.email" clearable></el-input>
+          </el-form-item>
         </div>
       </div>
       <div class="first-line">
-<div class="sex">
-      <el-form-item prop="sex">
-        <el-radio class="man" v-model="dataForm.sex" label="1" border>男</el-radio>
-        <el-radio class="woman" v-model="dataForm.sex" label="2" border>女</el-radio>
-      </el-form-item>
-    </div>
+      <div class="sex">
+        <el-form-item prop="sex">
+          <el-radio class="man" v-model="dataForm.sex" label="1" border>男</el-radio>
+          <el-radio class="woman" v-model="dataForm.sex" label="2" border>女</el-radio>
+        </el-form-item>
+      </div>
     <div class="birthday">
-        <el-date-picker v-model="dataForm.birthday" type="date" placeholder="选择生日"></el-date-picker>
+        <el-form-item prop="birthday">
+          <el-date-picker v-model="dataForm.birthday" type="date" placeholder="选择生日"></el-date-picker>
+        </el-form-item>
     </div>
     <div class="money">
       <el-select v-model="dataForm.salary" placeholder="选择预期薪资">
@@ -71,7 +73,10 @@
       </div>
     <div class="first-line">
       <div class="job">
-      <el-input placeholder="预期职位" v-model="dataForm.job" clearable></el-input>
+        <el-form-item prop="job">
+          <el-input placeholder="预期职位" v-model="dataForm.job" clearable></el-input>
+        </el-form-item>
+      
     </div>
     <div class="city">
       <el-input placeholder="预期城市" v-model="dataForm.city" clearable></el-input>
@@ -159,6 +164,19 @@ export default {
           ],
           sex: [
             { required: true, message: '请选择性别'}
+          ],
+          tele: [
+            { required: true, message: '请输入电话号码', trigger: 'blur'},
+            { min: 11, max:11, message: '请输入11位电话号码', trigger: 'blur'}
+          ],
+          email: [
+            { required: true, message: '请输入邮箱', trigger: 'blur'},
+          ],
+          birthday: [
+            { required: true, message: '请选择生日', trigger: 'blur'}
+          ],
+          job: [
+            { required: true, message: '请输入职位', trigger: 'blur'}
           ]
       },
       dialogFormVisible: false,
@@ -192,6 +210,7 @@ export default {
         b: '硕士',
         c: '博士'
       },
+      //薪资
       options: [
         {value: '1',salary: '面议'}, {value: '2',salary: '2k'}, 
         {value: '3',salary: '3k'}, {value: '4',salary: '4k'}, 
@@ -216,10 +235,9 @@ export default {
       this.$refs[formName].validate(async(valid) => {
         if(valid) {
           const { data: res } = await this.$http.post("api/saveResume", this.dataForm)
-          console.log(res)
           if(res.saveResult.code === 0){
             this.$message.success("保存成功")
-            this.$router.push("/");
+            this.$router.push("myresumes");
           }
         }else{
           this.$message.error("保存失败")
@@ -227,6 +245,18 @@ export default {
         }
       })
     },
+    controlMenuName(){
+      if(this.dataForm.menuName.length>=2 && this.dataForm.menuName.length<=10){
+        alert('简历名称在2到10个字符之间哦')
+      }
+    },
+    previewForm(formName){
+      this.$refs[formName].validate(async(valid) => {
+        if(valid){
+          let a
+        }
+      })
+    }
   },
   beforeCreate () {
 	// 修改背景色

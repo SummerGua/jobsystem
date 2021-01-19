@@ -5,7 +5,7 @@ Vue.use(Vuex)
 let state = {
   username: '',
   isLogin: false,
-  isStu: true,
+  isStu: undefined,
 }
 if(getToken()){
   state.isLogin = true

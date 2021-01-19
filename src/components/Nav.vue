@@ -10,12 +10,12 @@
         }}</router-link>
       </div>
       
-      <div v-show="this.$store.state.isLogin" class="info">
+      <div v-show="this.$store.state.isLogin&&this.$store.state.isStu" class="info">
         <router-link to="/message"><a>消息</a></router-link>
         <router-link to="/upload"><a>上传简历</a></router-link>
         <div class="my">
           <el-dropdown trigger="click">
-            <span  class="el-dropdown-link">
+            <span  class="el-dropdown-link drop-stu">
               {{this.$store.state.username}}
             </span>
             <el-dropdown-menu  slot="dropdown">
@@ -24,10 +24,15 @@
                 我的简历
                 </el-dropdown-item>
               </router-link>
-              
             </el-dropdown-menu>
           </el-dropdown>
         </div>
+        <a @click="logout">退出登录</a>
+      </div>
+      <div v-show="this.$store.state.isLogin&&!this.$store.state.isStu" class="info">
+        <router-link to="/message"><a>消息</a></router-link>
+        <router-link to="/receivedResumes"><a>收到的简历</a></router-link>
+        <span class="el-dropdown-link">{{this.$store.state.username}}</span>
         <a @click="logout">退出登录</a>
       </div>
     </div>
@@ -110,7 +115,7 @@ a:hover {
   color: white;
   font-size: 16px;
 }
-.el-dropdown-link:hover{
+.drop-stu:hover{
   cursor: pointer;
 }
 .item{

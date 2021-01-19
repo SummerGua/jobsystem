@@ -1,5 +1,5 @@
 import Cookies from "js-cookie"
-
+import vue from "../main"
 export function getToken(){
   if(Cookies.get('token')){    //判断是否有token
     return Cookies.get("token")
@@ -8,6 +8,6 @@ export function getToken(){
   }
 }
 
-export function getOthersName(){
-  return this.$http.get("/api/getothersname")
+export function getMessageSenders(){
+  return vue.$http.get("/api/getMessageSenders")
 }

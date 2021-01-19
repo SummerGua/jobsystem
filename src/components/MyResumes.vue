@@ -13,14 +13,26 @@
         <div class="index">
           <h3>简历目录</h3>
           <ul class="list">
-            <li>已投简历</li>
-            <li>已存简历</li>
+            <li @click="goNoSaved">已投简历</li>
+            <li @click="goSaved">已存简历</li>
           </ul>
         </div>
         
       </div>
-      <div class="right">
+      <div class="right" v-if="!isSavedData">
         <el-table stripe border max-height="800" :data="resumeData">
+          <el-table-column prop="coname" label="公司"></el-table-column>
+          <el-table-column prop="jobname" label="岗位"></el-table-column>
+          <el-table-column prop="type" label="类型"></el-table-column>
+          <el-table-column prop="progress" label="进度"></el-table-column>
+          <el-table-column prop="time" label="提交时间"></el-table-column>
+          <el-table-column fixed="right" label="操作" width="100">
+            <el-button type="text" size="small">查看</el-button>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="right" v-if="isSavedData">
+        <el-table stripe border max-height="800" :data="savedResumeData">
           <el-table-column prop="coname" label="公司"></el-table-column>
           <el-table-column prop="jobname" label="岗位"></el-table-column>
           <el-table-column prop="type" label="类型"></el-table-column>
@@ -39,12 +51,20 @@
 export default {
   data(){
     return{
-      resumeData:[]
+      resumeData:[],
+      savedResumeData: [],
+      isSavedData: false
     }
   },
   methods:{
     toUpload(){
       this.$router.push('/upload')
+    },
+    goNoSaved(){
+      this.isSavedData = false
+    },
+    goSaved(){
+      this.isSavedData = true
     }
   },
   beforeCreate () {
@@ -54,6 +74,9 @@ export default {
       res=>{
         for(let i=0;i<res.data.data.length;i++){
           this.$set(this.resumeData,i,res.data.data[i])
+        }
+        for(let j=0;j<res.data.datatwo.length;j++){
+          this.$set(this.savedResumeData,j,res.data.datatwo[j])
         }
       }
     )

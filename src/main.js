@@ -18,7 +18,7 @@ Vue.prototype.$http = axios.create({
 
 Vue.config.productionTip = false
 
-new Vue({
+export default new Vue({
   router,
   guards,
   store,

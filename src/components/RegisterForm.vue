@@ -78,7 +78,6 @@ export default {
           username: this.ruleForm.name,
           password: this.ruleForm.password
         })
-        console.log(res)
         if(res.registerInfo.code == 0){
           this.$message.success("注册成功")
   

@@ -1,13 +1,13 @@
 <template>
   <div class="">
-    <Progress></Progress>
+    <OkTipProgress></OkTipProgress>
   </div>
 </template>
 <script>
-import Progress from '../components/Progress.vue'
+import OkTipProgress from '../components/OkTipPorgress.vue'
 export default {
   components:{
-    Progress
+    OkTipProgress
   }
 }
 </script>

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { Table,Pagination,Button,Dialog,MessageBox,Form,FormItem,
   Input,Alert,Message,Radio,DatePicker,Select,Option,Switch,Dropdown,
-  DropdownItem,DropdownMenu,TableColumn } from 'element-ui'
+  DropdownItem,DropdownMenu,TableColumn,Rate } from 'element-ui'
 
 Vue.use(TableColumn)
 Vue.use(Table)
@@ -20,5 +20,6 @@ Vue.use(Dropdown)
 Vue.use(DropdownItem)
 Vue.use(DropdownMenu)
 Vue.use(Dialog)
+Vue.use(Rate)
 Vue.prototype.$message = Message
 Vue.prototype.$prompt = MessageBox

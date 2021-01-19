@@ -6,6 +6,7 @@ Mock.mock('/api/login','post', {
         message: 'success',
         code: 0,
         uid: 123123,
+        isStu: 0
     }
 })
 Mock.mock('/api/register','post', {
@@ -47,5 +48,52 @@ Mock.mock('/api/getShortResume','get',{
         {id:2, coname:Random.cfirst(), progress: '待审核', jobname:Random.clast(), type: '实习',time:Random.datetime('yyyy-MM-dd HH:mm'), resumeid:Random.integer( 100,999 )},
         {id:3, coname:Random.cfirst(), progress: '待审核', jobname:Random.clast(), type: '校招',time:Random.datetime('yyyy-MM-dd HH:mm'), resumeid:Random.integer( 100,999 )},
 
+    ],
+    datatwo:
+    [
+        {id:0, coname:Random.cfirst(), progress: '待审核', jobname:Random.clast(), type: '社招',time:Random.datetime('yyyy-MM-dd HH:mm'), resumeid:Random.integer( 100,999 )},
+        {id:1, coname:Random.cfirst(), progress: '已查看', jobname:Random.clast(), type: '社招',time:Random.datetime('yyyy-MM-dd HH:mm'), resumeid:Random.integer( 100,999 )},
     ]
+})
+
+//获取聊天列表近期消息下的头像和名字
+Mock.mock('/api/getMessageSenders','get',{
+    data:
+    [
+        {
+            id:0, src:Random.image('42x42'),name:Random.cname()
+        },
+        {
+            id:1, src:Random.image('42x42'),name:Random.cname()
+        },
+        {
+            id:2, src:Random.image('42x42'),name:Random.cname()
+        }
+    ]
+})
+
+//发送消息
+Mock.mock('/api/sendMessage','post',{
+    data:
+        {
+            state: 'ok'
+        }
+})
+
+//公司看的简历
+Mock.mock('api/getReceivedResumes','get',{
+    data:
+    {
+        name: 'ABC',
+        age: 22,
+        xueli: '本科',
+        education: '2018-2022 CQUPT 通信工程专业',
+        schexp: '参加了xxxxxx',
+        city:'',
+        job: '',
+        proexp: '',
+        awards: '',
+        skills: '',
+        evaluation: '上进心强'
+    }
 })

@@ -22,13 +22,30 @@
           <span>近期消息</span>
         </div>
         <div v-for="item in nameList" :key="item.id" :class="{active:item.id===isActive}" @click="changeClass(item.id)" class="list-item">
-          {{ item.name }}
+          <div class="left-imgs">
+            <img :src="item.src">
+          </div>
+          <a class="left-names">
+            {{ item.name }}
+          </a>
         </div>
         </div>
         <div class="right">
-          <div class="msg-title"><span>{{nameList[isActive].name}}</span></div>
+          <div class="msg-title">
+            <span>{{nameList[isActive].name}}</span>
+            </div>
           <div class="msg-list"></div>
-          <div class="send-box"></div>
+          <div class="send-box">
+            <div class="input-box">
+              <el-input type="textarea" :rows="4" resize="none" placeholder="回复一下吧" v-model="textarea">
+
+              </el-input>
+            </div>
+            <div class="send-area">
+              <a>{{textarea.length}}/500</a>
+              <el-button @click="sendMessage()" class="send-btn">发 送</el-button>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -38,41 +55,31 @@
 
 </template>
 <script>
-import {getOthersName} from '../plugins/request'
+import {getMessageSenders} from '../plugins/request'
 export default {
   data(){
     return{
-      nameList: [
-        {id:0,name: 'aaa'},
-        {id:1,name: 'bbb'},
-        {id:2,name: 'ccc'},
-        {id:3,name: 'ddd'},
-        {id:4,name: 'ddd'},
-        {id:5,name: 'ddd'},
-        {id:6,name: 'ddd'},
-        {id:7,name: 'ddd'},
-        {id:8,name: 'ddd'},
-        {id:9,name: 'ddd'},
-        {id:10,name: 'ddd'},
-        {id:11,name: 'ddd'},
-        {id:12,name: 'ddd'},
-      ],
+      nameList: [],
       isActive: 0,
+      textarea: ''
     }
   },
   methods: {
     changeClass(ind){
       this.isActive = ind
     },
-    getOthersName(){
-      getOthersName.then(res=>{
-        if(res.data){
-          this.nameList = res.data.namelist
-        }
-      }).catch(err=>{
-        alert("获取聊天列表失败"+err)
-      })
+    sendMessage(){
+      
     }
+  },
+  created(){
+  getMessageSenders().then(res=>{
+      if(res.data){
+        this.nameList = res.data.data
+      }
+    }).catch(err=>{
+      alert("获取聊天失败"+err)
+    })
   }
 }
 </script>
@@ -108,6 +115,10 @@ ul{
 li{
   margin-bottom: 20px;
 }
+li:hover{
+  cursor: pointer;
+  color: #2faee3;
+}
 .right-part{
   flex: 1;
   display: flex;
@@ -127,10 +138,12 @@ li{
   height: 100%;
   overflow: auto;
   border-right: #666 1px solid;
+
 }
 .right{
   flex: 1;
   width: 743px;
+
 }
 .recent-msg{
   display: flex;
@@ -141,9 +154,11 @@ li{
 .list-item{
   height: 60px;
   line-height: 60px;
+  position: relative;
 }
 .list-item:hover{
   cursor: pointer;
+  background-color: #e4e5e6;
 }
 .active{
   background-color: #e4e5e6;
@@ -161,14 +176,52 @@ li{
   height: 162px;
   background-color: #f0f0f0;
   border-top: 1px solid #d8d8d8;
+  padding: 0 16px;
 }
 .msg-box{
   height: calc(100% - 42px);
   display: flex;
+  margin-bottom: 10px;
 }
 .msg-list{
   height: calc(100% - 199px);
   box-shadow: 0 2px 4px 0 rgba(121,146,185,0.54);
   background-color: #f0f0f0;
+}
+.send-area{
+  height: 46px;
+  width: 711px;
+  position: absolute;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+.send-area a{
+  text-align: right;
+  flex: 1;
+}
+.el-input .el-input__inner{
+  height: 106px;
+}
+.send-btn{
+  margin-left: 10px;
+  text-align: right;
+  width: 80px;
+}
+.input-box{
+  height: 106px;
+  margin-top: 6px;
+}
+.left-imgs{
+  margin-right: 8px;
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  left: 40px;
+  top: 9px;
+}
+.left-names{
+  position: absolute;
+  left: 100px;
 }
 </style>

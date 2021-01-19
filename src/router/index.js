@@ -29,7 +29,8 @@ const routes = [
     path: '/upload',
     name: 'Upload',
     meta: {
-      needLogin: true
+      needLogin: true,
+      needStu: true
     },
     component: () => import('../views/Upload.vue')
   },
@@ -45,9 +46,28 @@ const routes = [
     path: '/myresumes',
     name: 'MyResumes',
     meta:{
-      needLogin: true
+      needLogin: true,
+      needStu: true
     },
     component: ()=> import('../views/MyResumes.vue')
+  },
+  {
+    path: '/receivedResumes',
+    name: 'ReceivedResumes',
+    meta:{
+      needLogin: true,
+      needStu: false
+    },
+    component: ()=> import('../views/ReceivedResumes.vue')
+  },
+  {
+    path: '/okTipProgress',
+    name: 'OkTipProgress',
+    meta:{
+      needLogin:true,
+      needStu: true
+    },
+    component: ()=> import('../views/Progress.vue')
   }
 ]
 

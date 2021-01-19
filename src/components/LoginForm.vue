@@ -68,7 +68,6 @@ export default {
           username: this.ruleForm.name,
           password: this.ruleForm.password
         });
-        console.log(res);
         if (res.userInfo.code == 0) {
           this.$message.success("登录成功")
           Cookies.set("username", res.userInfo.username)
@@ -78,6 +77,8 @@ export default {
           axios.defaults.headers.common['Authorization'] = token
           this.$store.state.username = res.userInfo.username
           this.$store.state.isLogin = true
+          if(res.userInfo.isStu==0) this.$store.state.isStu = false
+          else this.$store.state.isStu = true
           this.$router.push("/");
         } else {
           this.$message.error("登录失败");

@@ -58,15 +58,11 @@ export default {
   beforeCreate(){
     this.$http.get("api/getComs").then(
         res=>{
-          console.log(res.data.data[0])
           for(let i=0;i<res.data.data.length;i++)
             this.$set(this.coms,i,res.data.data[i])
           }
         )
-  },
-  mounted(){
-    console.log('coms[1]',this.coms[1])
-  } 
+  }
 }
 </script>
 <style scoped>

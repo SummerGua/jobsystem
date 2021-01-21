@@ -27,7 +27,9 @@
           <el-table-column prop="progress" label="进度"></el-table-column>
           <el-table-column prop="time" label="提交时间"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
-            <el-button type="text" size="small">查看</el-button>
+            <template slot-scope="scope"> 
+              <el-button @click="seeResume(scope.$index, resumeData)" type="text" size="small">查看</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -39,7 +41,9 @@
           <el-table-column prop="progress" label="进度"></el-table-column>
           <el-table-column prop="time" label="提交时间"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
-            <el-button type="text" size="small">查看</el-button>
+            <template slot-scope="scope">
+              <el-button @click="seeResume(scope.$index, savedResumeData)" type="text" size="small">查看</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -65,6 +69,9 @@ export default {
     },
     goSaved(){
       this.isSavedData = true
+    },
+    seeResume(x, y){
+      console.log(y[x].id)
     }
   },
   beforeCreate () {

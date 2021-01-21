@@ -5,13 +5,23 @@ Vue.use(Vuex)
 let state = {
   username: '',
   isLogin: false,
-  isStu: undefined,
+  isStu: false,
 }
 if(getToken()){
   state.isLogin = true
 }
 export default new Vuex.Store({
-	
-	state
+  state,
+  mutations:{
+    storeLogout(state){
+      state.isLogin = false
+    },
+    beStu(state){
+      state.isStu = true
+    },
+    clearName(state){
+      state.username = ''
+    }
+  }
 	
 })

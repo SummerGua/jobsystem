@@ -6,8 +6,8 @@
       <div class="title">消息中心</div>
       <ul>
         <li class="font-active">我的消息</li>
-        <li>收到的赞</li>
-        <li>回复我的</li>
+        <li v-if="this.$store.state.isStu==1">收到的赞</li>
+        <li v-if="this.$store.state.isStu==1">回复我的</li>
         <li>系统通知</li>
       </ul>
     </div>
@@ -21,7 +21,7 @@
         <div class="recent-msg">
           <span>近期消息</span>
         </div>
-        <div v-for="item in nameList" :key="item.id" :class="{active:item.id===isActive}" @click="changeClass(item.id)" class="list-item">
+        <div v-for="(item) in nameList" :key="item.id" :class="{active:item.id===isActive}" @click="changeClass(item.id)" class="list-item">
           <div class="left-imgs">
             <img :src="item.src">
           </div>
@@ -34,16 +34,30 @@
           <div class="msg-title">
             <span>{{nameList[isActive].name}}</span>
             </div>
-          <div class="msg-list"></div>
+          <!-- 聊天内容 -->
+          <div ref="win" class="msg-list">
+            <div v-if="texts[isActive]">
+
+            
+            <div v-for="(text,index) in texts[isActive]" :key="index">
+              <div class="line" v-if="!text.mine">
+                <div class="friend">{{text.content}}</div>
+                </div>
+              <div class="line" v-else>
+                <div class="me">{{text.content}}</div>
+              </div>
+            </div>
+</div>
+          </div>
+
           <div class="send-box">
             <div class="input-box">
-              <el-input type="textarea" :rows="4" resize="none" placeholder="回复一下吧" v-model="textarea">
-
+              <el-input type="textarea" :rows="4" resize="none" placeholder="回复一下吧" v-model="textarea[isActive]">
               </el-input>
             </div>
             <div class="send-area">
-              <a>{{textarea.length}}/500</a>
-              <el-button @click="sendMessage()" class="send-btn">发 送</el-button>
+              <a>{{textarea[isActive].length}}/500</a>
+              <el-button @click="sendMessage" class="send-btn">发 送</el-button>
             </div>
           </div>
         </div>
@@ -61,7 +75,24 @@ export default {
     return{
       nameList: [],
       isActive: 0,
-      textarea: ''
+      textarea: ['','','','','','',''],
+      texts:[
+        [
+        {mine:1,content:"我的第一条消息"},
+        {mine:0,content:"对面的hello!!"},
+        {mine:0,content:"对面的hello!!"},
+        {mine:0,content:"对面的hello!!"},
+        {mine:0,content:"对面的hello!!"},
+        {mine:0,content:"对面的hello!!"},
+        {mine:0,content:"对面的hello!!"},
+        {mine:0,content:"对面的hello!!"},
+        {mine:0,content:"对面的hello!!"},
+        {mine:0,content:"对面的hello!!"},
+        ],
+        [],
+        []
+        ]
+
     }
   },
   methods: {
@@ -69,7 +100,14 @@ export default {
       this.isActive = ind
     },
     sendMessage(){
-      
+      if(this.textarea[this.isActive].split(' ').join('') !== ""
+      &&
+      this.textarea[this.isActive].split('\n').join('')!==""){
+        this.texts[this.isActive].push({mine:1,content:this.textarea[this.isActive]})
+        this.textarea[this.isActive] = ''
+      }else{
+        alert("输入为空无法发送")
+      }
     }
   },
   created(){
@@ -80,6 +118,9 @@ export default {
     }).catch(err=>{
       alert("获取聊天失败"+err)
     })
+  },
+  updated(){
+    this.$refs.win.scrollTop = this.$refs.win.scrollHeight
   }
 }
 </script>
@@ -187,6 +228,8 @@ li:hover{
   height: calc(100% - 199px);
   box-shadow: 0 2px 4px 0 rgba(121,146,185,0.54);
   background-color: #f0f0f0;
+  overflow: auto;
+  padding: 5px 5px 5px 5px;
 }
 .send-area{
   height: 46px;
@@ -223,5 +266,25 @@ li:hover{
 .left-names{
   position: absolute;
   left: 100px;
+}
+.line{
+  margin-bottom: 16px;
+  min-height: 20px;
+}
+.friend{
+  text-align: left;
+  background-color: #afe1f7;
+  border-radius: 2px;
+  width: max-content;
+  float: left;
+  padding: 2px 6px;
+}
+.me{
+  text-align: right;
+  background-color: #afe1f7;
+  width: max-content;
+  float: right;
+  border-radius: 2px;
+  padding: 2px 6px;
 }
 </style>

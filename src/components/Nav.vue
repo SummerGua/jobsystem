@@ -32,6 +32,7 @@
       <div v-show="this.$store.state.isLogin&&!this.$store.state.isStu" class="info">
         <router-link to="/message"><a>消息</a></router-link>
         <router-link to="/receivedResumes"><a>收到的简历</a></router-link>
+        <router-link to="/processedResumes"><a>已处理简历</a></router-link>
         <span class="el-dropdown-link">{{this.$store.state.username}}</span>
         <a @click="logout">退出登录</a>
       </div>
@@ -45,7 +46,6 @@ export default {
   data() {
     return {
       funcs: [
-        { id: 0, name: "上传简历", to: "/upload" },
         { id: 1, name: "登录", to: "/login" },
         { id: 2, name: "注册", to: "/register" },
       ],
@@ -55,7 +55,7 @@ export default {
   methods: {
     logout() {
       window.sessionStorage.clear();
-      this.$store.state.isLogin = false;
+      this.$store.commit('storeLogout')
       Cookies.remove('username');
       this.$router.push("/login");
     }

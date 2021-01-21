@@ -11,3 +11,7 @@ export function getToken(){
 export function getMessageSenders(){
   return vue.$http.get("/api/getMessageSenders")
 }
+
+export function getReceivedResumes(){
+  return vue.$http.get('/api/getReceivedResumes')
+}

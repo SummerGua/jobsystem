@@ -78,7 +78,7 @@ export default {
           this.$store.state.username = res.userInfo.username
           this.$store.state.isLogin = true
           if(res.userInfo.isStu==0) this.$store.state.isStu = false
-          else this.$store.state.isStu = true
+          else this.$store.commit('beStu')
           this.$router.push("/");
         } else {
           this.$message.error("登录失败");

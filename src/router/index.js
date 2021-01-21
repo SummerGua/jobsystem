@@ -13,7 +13,7 @@ const routes = [
     path: '/login',
     name: 'Login',
     meta: {
-      noNeedLogin: true
+      needLogin: false
     },
     component: () => import('../views/Login.vue')
   },
@@ -21,7 +21,7 @@ const routes = [
     path: '/register',
     name: 'Register',
     meta: {
-      noNeedLogin: true
+      needLogin: false
     },
     component: () => import('../views/Register.vue')
   },
@@ -61,13 +61,24 @@ const routes = [
     component: ()=> import('../views/ReceivedResumes.vue')
   },
   {
-    path: '/okTipProgress',
-    name: 'OkTipProgress',
+    path: '/process',
+    name: 'Process',
     meta:{
       needLogin:true,
       needStu: true
     },
-    component: ()=> import('../views/Progress.vue')
+    component: ()=> import('../views/Process.vue')
+  },
+
+  //处理的简历
+  {
+    path: '/processedResumes',
+    name: 'ProcessedResumes',
+    meta:{
+      needLogin: true,
+      needStu: false
+    },
+    component: ()=> import('../views/ProcessedResumes.vue')
   }
 ]
 

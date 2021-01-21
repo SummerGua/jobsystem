@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import OkTipProgress from '../components/OkTipPorgress.vue'
+import OkTipProgress from '../components/OkTipProgress'
 export default {
   components:{
     OkTipProgress

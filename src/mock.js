@@ -6,7 +6,7 @@ Mock.mock('/api/login','post', {
         message: 'success',
         code: 0,
         uid: 123123,
-        isStu: 0
+        isStu: 1
     }
 })
 Mock.mock('/api/register','post', {
@@ -81,19 +81,19 @@ Mock.mock('/api/sendMessage','post',{
 })
 
 //公司看的简历
-Mock.mock('api/getReceivedResumes','get',{
+Mock.mock('/api/getReceivedResumes','get',{
     data:
     {
-        name: 'ABC',
+        name: '舒某某',
         age: 22,
         xueli: '本科',
         education: '2018-2022 CQUPT 通信工程专业',
         schexp: '参加了xxxxxx',
-        city:'',
-        job: '',
-        proexp: '',
-        awards: '',
-        skills: '',
-        evaluation: '上进心强'
+        city:'北京',
+        job: '前端工程师',
+        proexp: '太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了太多了',
+        awards: '国家奖学金*4',
+        skills: 'CET-4 CET-6',
+        evaluation: '太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了太优秀了上进心强'
     }
 })

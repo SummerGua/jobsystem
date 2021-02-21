@@ -17,21 +17,20 @@
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')"
           >登录</el-button>
-        <el-button @click="goRegister">没有账号？点此注册</el-button>
+        <el-button @click="goSignup">没有账号？点此注册</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-import Cookies from "js-cookie"
 import axios from 'axios'
 export default {
   name: "LoginForm",
   data() {
     return {
       ruleForm: {
-        name: "123",
+        name: "zhangsan",
         password: "123123",
       },
       rules: {
@@ -64,29 +63,31 @@ export default {
           return false;
         }
 
-        const { data: res } = await this.$http.post("api/login", {
-          username: this.ruleForm.name,
+        const { data: res } = await this.$http.post("users/login", {
+          name: this.ruleForm.name,
           password: this.ruleForm.password
         });
-        if (res.userInfo.code == 0) {
+        if (res.code == 0) {
           this.$message.success("登录成功")
-          Cookies.set("username", res.userInfo.username)
-          let token = res.userInfo.uid;
+          let token = res.token
           sessionStorage.setItem("token", token)
-          sessionStorage.setItem("username",res.userInfo.username)
+          sessionStorage.setItem("uid",res.uid)
+          sessionStorage.setItem("isStu",res.isStu)
+          sessionStorage.setItem("name",res.name)
           axios.defaults.headers.common['Authorization'] = token
-          this.$store.state.username = res.userInfo.username
-          this.$store.state.isLogin = true
-          if(res.userInfo.isStu==0) this.$store.state.isStu = false
-          else this.$store.commit('beStu')
-          this.$router.push("/");
+          this.$store.commit('updateName',res.name)
+          this.$store.commit('updateUid',res.uid)
+          this.$store.commit('storeLogin')
+          if(res.isStu==1) this.$store.commit('beStu')
+          if(res.isStu==0) this.$store.commit('noStu')
+          this.$router.push("/")
         } else {
-          this.$message.error("登录失败");
+          this.$message.error(res.data)
         }
       });
     },
-    goRegister() {
-      this.$router.push("/register");
+    goSignup() {
+      this.$router.push("/Signup")
     },
   },
 };

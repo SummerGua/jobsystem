@@ -21,43 +21,43 @@
         <div class="recent-msg">
           <span>近期消息</span>
         </div>
-        <div v-for="(item) in nameList" :key="item.id" :class="{active:item.id===isActive}" @click="changeClass(item.id)" class="list-item">
+        <div v-cloak v-for="(item) in nameList" :key="item.id" :class="{active:item.id===isActive}" @click="changeClass(item.id);getMessage(item.uid,item.id)" class="list-item">
           <div class="left-imgs">
-            <img :src="item.src">
+            <img :src="item.pic">
           </div>
-          <a class="left-names">
-            {{ item.name }}
+          <a v-if="item.realName" class="left-names">
+            {{ item.realName }}
           </a>
         </div>
         </div>
         <div class="right">
           <div class="msg-title">
-            <span>{{nameList[isActive].name}}</span>
-            </div>
+            <span>{{isActive}}</span>
+          </div>
           <!-- 聊天内容 -->
           <div ref="win" class="msg-list">
             <div v-if="texts[isActive]">
-
-            
             <div v-for="(text,index) in texts[isActive]" :key="index">
               <div class="line" v-if="!text.mine">
                 <div class="friend">{{text.content}}</div>
+                <div class="uptimeL">{{text.upTime}}</div>
                 </div>
               <div class="line" v-else>
                 <div class="me">{{text.content}}</div>
+                <div class="uptimeR">{{text.upTime}}</div>
               </div>
             </div>
-</div>
+          </div>
           </div>
 
           <div class="send-box">
             <div class="input-box">
-              <el-input type="textarea" :rows="4" resize="none" placeholder="回复一下吧" v-model="textarea[isActive]">
-              </el-input>
+              <textarea class="input" v-model="toSendMes[isActive]" placeholder="回复一下吧">
+              </textarea>
             </div>
             <div class="send-area">
-              <a>{{textarea[isActive].length}}/500</a>
-              <el-button @click="sendMessage" class="send-btn">发 送</el-button>
+              <a>{{ inputLength }}/200</a>
+              <el-button @click="sendMessages" class="send-btn">发送</el-button>
             </div>
           </div>
         </div>
@@ -69,58 +69,130 @@
 
 </template>
 <script>
-import {getMessageSenders} from '../plugins/request'
+import {getMessageSenders, sendMessage} from '../plugins/request'
 export default {
   data(){
     return{
       nameList: [],
       isActive: 0,
-      textarea: ['','','','','','',''],
-      texts:[
-        [
-        {mine:1,content:"我的第一条消息"},
-        {mine:0,content:"对面的hello!!"},
-        {mine:0,content:"对面的hello!!"},
-        {mine:0,content:"对面的hello!!"},
-        {mine:0,content:"对面的hello!!"},
-        {mine:0,content:"对面的hello!!"},
-        {mine:0,content:"对面的hello!!"},
-        {mine:0,content:"对面的hello!!"},
-        {mine:0,content:"对面的hello!!"},
-        {mine:0,content:"对面的hello!!"},
-        ],
-        [],
-        []
-        ]
-
+      toSendMes: [''],
+      texts:['']
     }
   },
   methods: {
-    changeClass(ind){
-      this.isActive = ind
+    changeClass(i){
+      this.isActive = i
     },
-    sendMessage(){
-      if(this.textarea[this.isActive].split(' ').join('') !== ""
+    getMessage(uid,id){
+      this.$http.post('/users/getMessage', {hisuid:uid}).then(
+        data=>{
+          let messages = data.data.data
+          if(data.data.code==0){
+            for(let i=0;i<messages.length;i++){
+            let myuid = sessionStorage.getItem('uid')
+            if(messages[i].time){
+              messages[i].time = messages[i].time.split('.')[0]
+              messages[i].time = messages[i].time.replace('T', ' ')
+            }
+            if(messages[i].fromUid==myuid){
+              this.$set(this.texts[id],i,{
+                  mine: 1,
+                  content: messages[i].message,
+                  upTime: messages[i].time
+              })
+            }else{
+
+              this.$set(this.texts[id],i,{
+                  mine: 0,
+                  content: messages[i].message,
+                  upTime: messages[i].time
+              })
+            }
+          }
+          }
+        }
+      )
+    },
+    sendMessages(){
+
+      if(this.nameList.length == 0) return false
+      if(this.toSendMes[this.isActive].split(' ').join('') !== ""
       &&
-      this.textarea[this.isActive].split('\n').join('')!==""){
-        this.texts[this.isActive].push({mine:1,content:this.textarea[this.isActive]})
-        this.textarea[this.isActive] = ''
+      this.toSendMes[this.isActive].split('\n').join('')!==""){
+        let req={}
+        if(this.nameList[this.isActive].uid){
+          req = {
+            toUid: this.nameList[this.isActive].uid,
+            message: this.toSendMes[this.isActive]
+          }
+        }
+        
+        sendMessage(req).then(res => {
+          if(res.code==0) this.$message.success('发送成功')
+        })
+        let time = new Date()
+        let month = time.getMonth()+1
+        let day = time.getDate()
+        let hour = time.getHours()
+        let min = time.getMinutes()
+        let sec = time.getSeconds()
+        if(month.toString().length<2) month = 0+''+month
+        if(day.toString().length<2) day = 0+''+day
+        if(hour.toString().length<2) hour = 0+''+hour
+        if(min.toString().length<2) min = 0+''+min
+        if(sec.toString().length<2) sec = 0+''+sec
+        this.texts[this.isActive].push(
+          {
+            mine:1,
+            content:this.toSendMes[this.isActive],
+            upTime: time.getFullYear()+'-'+month+'-'+day+' '+time.getHours()+':'+time.getMinutes()+':'+time.getSeconds()
+          }
+        )
+        this.$set(this.toSendMes,this.isActive,'') // 输入框清空
       }else{
         alert("输入为空无法发送")
       }
     }
   },
   created(){
-  getMessageSenders().then(res=>{
-      if(res.data){
-        this.nameList = res.data.data
+    getMessageSenders().then(res=>{
+      this.texts = []
+      this.toSendMes = []
+      if(res.data.code==0){
+        console.log(res.data.data)
+        for(let i=0;i<res.data.data.length;i++){
+          this.$set(this.nameList,i,{
+              id: i,
+              pic: res.data.data[i].pic,
+              realName: res.data.data[i].realName,
+              uid: res.data.data[i].uid
+            })
+          this.$set(this.texts,i,[])
+          this.$set(this.toSendMes,i,'')
+        }
       }
     }).catch(err=>{
       alert("获取聊天失败"+err)
     })
+    
+  },
+  mounted(){
+    setTimeout(() => {
+      if(this.nameList[0]){
+        this.getMessage(this.nameList[0].uid, 0)
+      }
+      
+    }, 50);//确保created结束
+    
   },
   updated(){
     this.$refs.win.scrollTop = this.$refs.win.scrollHeight
+  },
+  computed:{
+    inputLength: function(){
+      
+      return this.toSendMes[this.isActive]?this.toSendMes[this.isActive].length : 0
+    }
   }
 }
 </script>
@@ -218,6 +290,7 @@ li:hover{
   background-color: #f0f0f0;
   border-top: 1px solid #d8d8d8;
   padding: 0 16px;
+  box-shadow: 0 2px 4px 0 rgb(121 146 185 / 54%);
 }
 .msg-box{
   height: calc(100% - 42px);
@@ -234,8 +307,6 @@ li:hover{
 .send-area{
   height: 46px;
   width: 711px;
-  position: absolute;
-  bottom: 16px;
   display: flex;
   align-items: center;
 }
@@ -243,13 +314,10 @@ li:hover{
   text-align: right;
   flex: 1;
 }
-.el-input .el-input__inner{
-  height: 106px;
-}
 .send-btn{
   margin-left: 10px;
   text-align: right;
-  width: 80px;
+  width: 70px;
 }
 .input-box{
   height: 106px;
@@ -279,6 +347,14 @@ li:hover{
   float: left;
   padding: 2px 6px;
 }
+.uptimeL{
+  font-size: 6px;
+  float: left;
+}
+.uptimeR{
+  float: right;
+  font-size: 6px;
+}
 .me{
   text-align: right;
   background-color: #afe1f7;
@@ -286,5 +362,10 @@ li:hover{
   float: right;
   border-radius: 2px;
   padding: 2px 6px;
+}
+.input{
+  width: 100%;
+  height: 90px;
+  resize: none;
 }
 </style>

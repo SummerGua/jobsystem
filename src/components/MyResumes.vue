@@ -17,32 +17,29 @@
             <li @click="goSaved">已存简历</li>
           </ul>
         </div>
-        
       </div>
-      <div class="right" v-if="!isSavedData">
-        <el-table stripe border max-height="800" :data="resumeData">
-          <el-table-column prop="coname" label="公司"></el-table-column>
-          <el-table-column prop="jobname" label="岗位"></el-table-column>
+      <div class="right" v-show="!isSavedData">
+        <el-table stripe border max-height="800" :data="sendedResumeData">
+          <el-table-column prop="companyName" label="公司"></el-table-column>
+          <el-table-column prop="job" label="岗位"></el-table-column>
           <el-table-column prop="type" label="类型"></el-table-column>
           <el-table-column prop="progress" label="进度"></el-table-column>
-          <el-table-column prop="time" label="提交时间"></el-table-column>
+          <el-table-column prop="upTime" label="提交时间"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope"> 
-              <el-button @click="seeResume(scope.$index, resumeData)" type="text" size="small">查看</el-button>
+              <el-button @click="seeResume(scope.$index)" type="text" size="small">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <div class="right" v-if="isSavedData">
-        <el-table stripe border max-height="800" :data="savedResumeData">
-          <el-table-column prop="coname" label="公司"></el-table-column>
-          <el-table-column prop="jobname" label="岗位"></el-table-column>
-          <el-table-column prop="type" label="类型"></el-table-column>
-          <el-table-column prop="progress" label="进度"></el-table-column>
-          <el-table-column prop="time" label="提交时间"></el-table-column>
+      <div class="right" v-show="isSavedData">
+        <el-table stripe border max-height="800" :data="resumeData">
+          <el-table-column prop="job" label="岗位"></el-table-column>
+          <el-table-column prop="upTime" label="提交时间"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
-              <el-button @click="seeResume(scope.$index, savedResumeData)" type="text" size="small">查看</el-button>
+              <el-button @click="seeSavedResume(scope.$index)" type="text" size="small">查看</el-button>
+              <el-button disabled @click="edit" type="text" size="small">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -56,8 +53,8 @@ export default {
   data(){
     return{
       resumeData:[],
-      savedResumeData: [],
-      isSavedData: false
+      sendedResumeData: [],
+      isSavedData: false,
     }
   },
   methods:{
@@ -70,20 +67,46 @@ export default {
     goSaved(){
       this.isSavedData = true
     },
-    seeResume(x, y){
-      console.log(y[x].id)
+    seeResume(x){
+      this.$router.push({
+        name: 'Preview',
+        params: {
+          rid: this.sendedResumeData[x].rid
+        }
+      })
+    },
+    seeSavedResume(x){
+      this.$router.push({
+        name: 'Preview',
+        params: {
+          rid: this.resumeData[x].rid
+        }
+      })
+    },
+    edit(){
+      console.log('edit btn')
     }
   },
   beforeCreate () {
 	// 修改背景色
     document.querySelector('body').setAttribute('style', 'background-color:#f1f1f1')
-    this.$http.get("api/getShortResume").then(
+    this.$http.get("users/getShortResume").then(
       res=>{
         for(let i=0;i<res.data.data.length;i++){
-          this.$set(this.resumeData,i,res.data.data[i])
-        }
-        for(let j=0;j<res.data.datatwo.length;j++){
-          this.$set(this.savedResumeData,j,res.data.datatwo[j])
+          res.data.data[i].upTime = res.data.data[i].upTime.split('.')[0]
+          res.data.data[i].upTime = res.data.data[i].upTime.replace(/T/,' ')
+          if(res.data.data[i].type==0) res.data.data[i].type='实习'
+          if(res.data.data[i].type==1) res.data.data[i].type='校招'
+          if(res.data.data[i].type==2) res.data.data[i].type='社招'
+          if(res.data.data[i].progress==0) res.data.data[i].progress='未查看'
+          if(res.data.data[i].progress==1) res.data.data[i].progress='已接收'
+          if(res.data.data[i].progress==2) res.data.data[i].progress='已拒绝'
+          if(res.data.data[i].sended==0){
+            this.resumeData.push(res.data.data[i])
+          }
+          if(res.data.data[i].sended==1){
+            this.sendedResumeData.push(res.data.data[i])
+          }
         }
       }
     )
@@ -98,7 +121,6 @@ export default {
 <style scoped>
 .container{
   height: 100%;
-  
 }
 .top-menu{
   width: 1228px;

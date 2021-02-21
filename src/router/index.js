@@ -18,12 +18,12 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/register',
-    name: 'Register',
+    path: '/signup',
+    name: 'Signup',
     meta: {
       needLogin: false
     },
-    component: () => import('../views/Register.vue')
+    component: () => import('../views/Signup.vue')
   },
   {
     path: '/upload',
@@ -49,7 +49,7 @@ const routes = [
       needLogin: true,
       needStu: true
     },
-    component: ()=> import('../views/MyResumes.vue')
+    component: () => import('../views/MyResumes.vue')
   },
   {
     path: '/receivedResumes',
@@ -58,32 +58,48 @@ const routes = [
       needLogin: true,
       needStu: false
     },
-    component: ()=> import('../views/ReceivedResumes.vue')
+    component: () => import('../views/ReceivedResumes.vue')
   },
-  {
-    path: '/process',
-    name: 'Process',
-    meta:{
-      needLogin:true,
-      needStu: true
-    },
-    component: ()=> import('../views/Process.vue')
-  },
-
   //处理的简历
   {
     path: '/processedResumes',
     name: 'ProcessedResumes',
-    meta:{
+    meta: {
       needLogin: true,
       needStu: false
     },
-    component: ()=> import('../views/ProcessedResumes.vue')
+    component: () => import('../views/ProcessedResumes.vue')
+  },
+  {
+    path: '/preview',
+    name: 'Preview',
+    meta: {
+      needLogin: true,
+    },
+    component: () => import('../views/Preview.vue')
+  },
+  {
+    path: '/newjob',
+    name: 'NewJob',
+    meta: {
+      needLogin: true,
+      needStu: false
+    },
+    component: () => import('../views/NewJob.vue')
+  },
+  {
+    path: '/myjob',
+    name: 'MyJob',
+    meta: {
+      needLogin: true,
+      needStu: false
+    },
+    component: () => import('../views/MyJob.vue')
   }
 ]
 
 const router = new VueRouter({
-  // mode: 'history',
+  mode: 'history',
   routes
 })
 

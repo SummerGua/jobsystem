@@ -13,21 +13,15 @@
       <a v-show="!isCom">热门职位</a>
     </div>
     <div class="all-companies">
-      <div class="one-company" v-for="item in coms" :key="item.id">
+      <div class="one-company" v-for="item in coms" :key="item.cid">
         <div class="pic">
           <img :src="item.src">
         </div>
         <div class="one-right">
-          <div class="com-name">{{item.name}}</div>
-          <div class="info">{{item.info}}</div>
+          <div class="com-name">{{item.companyName}}</div>
+          <div class="info">{{item.description}}</div>
         </div>
       </div>
-    <div class="page">
-      <el-pagination layout="prev, pager, next"
-      :page-size=12
-      :total=12>
-      </el-pagination>  
-    </div>
     </div>
     
     <!-- <div class="jobs">
@@ -56,7 +50,7 @@ export default {
     }
   },
   beforeCreate(){
-    this.$http.get("api/getComs").then(
+    this.$http.get("public/getComs").then(
         res=>{
           for(let i=0;i<res.data.data.length;i++)
             this.$set(this.coms,i,res.data.data[i])
@@ -126,7 +120,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin: 16px auto 0 auto;
-  overflow: hidden;
 }
 .one-company{
   height: 80px;
@@ -136,6 +129,7 @@ export default {
 .one-company:hover{
   cursor: pointer;
   color: #409eff;
+  background-color: #ebebeb;
 }
 .one-company div{
   display: block;
@@ -155,6 +149,7 @@ export default {
   width: 185px;
   overflow: hidden;
   height: 100%;
+  padding-top: 10px;
 }
 .info{
   overflow: hidden;

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <RegisterForm></RegisterForm>
+    <SignupForm></SignupForm>
   </div>
 </template>
 <script>
-import RegisterForm from "../components/RegisterForm.vue"
+import SignupForm from "../components/SignupForm.vue"
 export default {
   components:{
-    RegisterForm
+    SignupForm
   }
   
 }

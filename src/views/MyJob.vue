@@ -1,15 +1,15 @@
 <template>
   <div class="container">
-    <ProcessedResumes></ProcessedResumes>
+    <MyJob></MyJob>
   </div>
 
 </template>
 
 <script>
-import ProcessedResumes from '../components/ProcessedResumes'
+import MyJob from '../components/MyJob'
 export default {
   components:{
-    ProcessedResumes,
+    MyJob,
   }
 }
 </script>

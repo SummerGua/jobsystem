@@ -21,5 +21,7 @@ Vue.use(DropdownItem)
 Vue.use(DropdownMenu)
 Vue.use(Dialog)
 Vue.use(Rate)
+
+
 Vue.prototype.$message = Message
-Vue.prototype.$prompt = MessageBox
+Vue.prototype.$confirm = MessageBox.confirm

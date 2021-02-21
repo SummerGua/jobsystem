@@ -10,7 +10,7 @@
         }}</router-link>
       </div>
       
-      <div v-show="this.$store.state.isLogin&&this.$store.state.isStu" class="info">
+      <div v-show="this.$store.state.isLogin&&(this.$store.state.isStu==1)" class="info">
         <router-link to="/message"><a>消息</a></router-link>
         <router-link to="/upload"><a>上传简历</a></router-link>
         <div class="my">
@@ -29,7 +29,9 @@
         </div>
         <a @click="logout">退出登录</a>
       </div>
-      <div v-show="this.$store.state.isLogin&&!this.$store.state.isStu" class="info">
+      <div v-show="this.$store.state.isLogin&&(this.$store.state.isStu==0)" class="info-two">
+        <router-link to="/newjob"><a>发布职位</a></router-link>
+        <router-link to="/myjob"><a>我的职位</a></router-link>
         <router-link to="/message"><a>消息</a></router-link>
         <router-link to="/receivedResumes"><a>收到的简历</a></router-link>
         <router-link to="/processedResumes"><a>已处理简历</a></router-link>
@@ -40,14 +42,13 @@
   </div>
 </template>
 <script>
-import Cookies from "js-cookie"
 export default {
   name: "Nav",
   data() {
     return {
       funcs: [
         { id: 1, name: "登录", to: "/login" },
-        { id: 2, name: "注册", to: "/register" },
+        { id: 2, name: "注册", to: "/signup" },
       ],
       username: ''
     };
@@ -56,7 +57,6 @@ export default {
     logout() {
       window.sessionStorage.clear();
       this.$store.commit('storeLogout')
-      Cookies.remove('username');
       this.$router.push("/login");
     }
   },
@@ -93,14 +93,18 @@ a:hover {
 .function {
   float: right;
 }
-.info {
+.info,.info-two {
   float: right;
   display: flex;
   justify-content: space-around;
-  width: 300px;
   height: 49px;
 }
-
+.info{
+  width: 300px;
+}
+.info-two{
+  width: 480px;
+}
 .function a {
   margin-left: 20px;
 }

@@ -4,8 +4,6 @@
     <transition name="fade" mode="out-in">
       <router-view class="router-view"></router-view>
     </transition>
-    
-    
   </div>
 </template>
 
@@ -16,6 +14,17 @@ export default {
   name: 'app',
   components: {
     Nav
+  },
+  mounted(){
+    if(sessionStorage.getItem('token')){
+      this.$store.commit('storeLogin')
+      if(sessionStorage.getItem('isStu')==1) this.$store.commit('beStu')
+      if(sessionStorage.getItem('isStu')==0) this.$store.commit('noStu')
+      this.$store.commit('updateName', sessionStorage.getItem('name'))
+      this.$store.commit('updateUid', sessionStorage.getItem('uid'))
+    }else{
+      this.$store.commit('storeLogout')
+    }
   }
 }
 </script>

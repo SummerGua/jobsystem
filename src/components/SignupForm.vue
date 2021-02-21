@@ -14,6 +14,12 @@
       <el-form-item label="用户名" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
+      <el-form-item label="真实姓名" prop="realName">
+        <el-input v-model="ruleForm.realName"></el-input>
+      </el-form-item>
+      <el-form-item v-show="!role" label="公司名称" prop="companyName">
+        <el-input v-model="ruleForm.companyName"></el-input>
+      </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input :show-password=true type="password" v-model="ruleForm.password"></el-input>
       </el-form-item>
@@ -31,7 +37,7 @@
 <script>
 
 export default {
-  name: 'RegisterForm',
+  name: 'SignupForm',
   data() {
     var validatePass = (rule, value, callback) => {
         if (value === '') {
@@ -45,8 +51,10 @@ export default {
     return {
       ruleForm: {
           name: '123',
+          realName: '李四',
           password: '123123',
-          checkpassword: '123123'
+          checkpassword: '123123',
+          companyName: ''
       },
       role: true,
       rules: {
@@ -54,12 +62,18 @@ export default {
           { required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
         ],
+        realName:[
+          {required: true, message: '请输入真实姓名', trigger: 'blur'}
+        ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
         ],
         checkpassword: [
           { validator: validatePass, trigger: 'blur' }
+        ],
+        companyName: [
+          { required: true, message: '请输入公司名称', trigger: 'blur' },
         ]
       },
     }
@@ -71,19 +85,21 @@ export default {
     submitForm(formName){
       this.$refs[formName].validate(async (valid) => {
         if(!valid){
-          alert("注册失败")
+          alert("表单错误")
           return false
         }
-        const { data: res } = await this.$http.post("api/register",{
-          username: this.ruleForm.name,
-          password: this.ruleForm.password
+        const { data: res } = await this.$http.post("users/signup",{
+          name: this.ruleForm.name,
+          password: this.ruleForm.password,
+          realName: this.ruleForm.realName,
+          companyName: this.ruleForm.companyName,
+          isStu: this.role ? 1 : 0
         })
-        if(res.registerInfo.code == 0){
+        if(res.code == 0){
           this.$message.success("注册成功")
-  
           this.$router.push("/login");
         }else {
-          this.$message.error("注册失败");
+          this.$message.error(res.data);
         }
       })
     }

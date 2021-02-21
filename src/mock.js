@@ -1,7 +1,7 @@
 const { Random } = require('mockjs')
 const Mock = require('mockjs')
-Mock.mock('/api/login','post', {
-    "userInfo": { 
+Mock.mock('/users/login','post', {
+    "userInfo": {
         username: Mock.Random.cname(),
         message: 'success',
         code: 0,
@@ -9,20 +9,20 @@ Mock.mock('/api/login','post', {
         isStu: 1
     }
 })
-Mock.mock('/api/register','post', {
-    "registerInfo": { 
+Mock.mock('/user/signup','post', {
+    "signupInfo": { 
         message: 'success',
         code: 0,
         uid: 123123,
         username: Mock.Random.cname()
     }
-})
-Mock.mock('/api/saveResume', 'post', {
+})        
+Mock.mock('/users/saveResume', 'post', {
     "saveResult": {
         code: 0
     }
 })
-Mock.mock('/api/getComs','get',{
+Mock.mock('/public/getComs','get',{
     data:
         [
             {id:0,src:Random.image('80x80'),info:Random.cparagraph(1),name:Random.cfirst()},
@@ -40,7 +40,7 @@ Mock.mock('/api/getComs','get',{
     ],
     max:12
 })
-Mock.mock('/api/getShortResume','get',{
+Mock.mock('/users/getShortResume','get',{
     data:
     [
         {id:0, coname:Random.cfirst(), progress: '待审核', jobname:Random.clast(), type: '实习',time:Random.datetime('yyyy-MM-dd HH:mm'), resumeid:Random.integer( 100,999 )},
@@ -57,7 +57,7 @@ Mock.mock('/api/getShortResume','get',{
 })
 
 //获取聊天列表近期消息下的头像和名字
-Mock.mock('/api/getMessageSenders','get',{
+Mock.mock('/users/getMessageSenders','get',{
     data:
     [
         {
@@ -73,7 +73,7 @@ Mock.mock('/api/getMessageSenders','get',{
 })
 
 //发送消息
-Mock.mock('/api/sendMessage','post',{
+Mock.mock('/users/sendMessage','post',{
     data:
         {
             state: 'ok'

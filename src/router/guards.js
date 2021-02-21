@@ -24,7 +24,7 @@ const guards = router.beforeEach(function(to,from,next){
   }
   
   if('needStu' in to.meta && to.meta.needStu){
-    if(store.state.isStu){ //去学生的页面
+    if(sessionStorage.getItem('isStu')==1){ //去学生的页面
       next()
     }else{
       alert("您不是学生，无访问权限")
@@ -34,13 +34,19 @@ const guards = router.beforeEach(function(to,from,next){
     }
   }
   if('needStu' in to.meta && to.meta.needStu===false){
-    if(store.state.isLogin){
+    if(store.state.isLogin&&store.state.isStu){
       alert("您不是企业，无访问权限")
       next({
         name: 'Home'
       })
-    }else{
+    }
+    else if(store.state.isLogin && !store.state.isStu){
       next()
+    }else{
+      alert("请先登录")
+      next({
+        name: 'Home'
+      })
     }
   }
 })

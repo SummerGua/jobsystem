@@ -95,6 +95,11 @@ const routes = [
       needStu: false
     },
     component: () => import('../views/MyJob.vue')
+  },
+  {
+    path: '/companyInfo',
+    name: 'CompanyInfo',
+    component: () => import('../views/CompanyInfo.vue')
   }
 ]
 

@@ -44,7 +44,7 @@ export default {
     }
   },
   created(){
-    this.rid = this.$route.params.rid
+    this.rid = this.$route.query.rid
     this.$http.get('users/getFullResume?rid='+this.rid).then(
       res => {
         const data = res.data.data[0]

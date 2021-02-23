@@ -1,13 +1,13 @@
 <template>
   <div class="login">
-    <LoginForm></LoginForm>
+    <CompanyInfo></CompanyInfo>
   </div>
 </template>
 <script>
-import LoginForm from '../components/LoginForm'
+import CompanyInfo from '../components/CompanyInfo'
 export default {
   components:{
-    LoginForm
+    CompanyInfo
   }
 }
 </script>

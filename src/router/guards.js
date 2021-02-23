@@ -22,7 +22,6 @@ const guards = router.beforeEach(function(to,from,next){
       next()
     }
   }
-  
   if('needStu' in to.meta && to.meta.needStu){
     if(sessionStorage.getItem('isStu')==1){ //去学生的页面
       next()

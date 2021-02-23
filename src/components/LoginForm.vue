@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       ruleForm: {
-        name: "zhangsan",
+        name: "aaa",
         password: "123123",
       },
       rules: {

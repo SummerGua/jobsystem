@@ -70,7 +70,7 @@ export default {
     seeResume(x){
       this.$router.push({
         name: 'Preview',
-        params: {
+        query: {
           rid: this.sendedResumeData[x].rid
         }
       })
@@ -78,7 +78,7 @@ export default {
     seeSavedResume(x){
       this.$router.push({
         name: 'Preview',
-        params: {
+        query: {
           rid: this.resumeData[x].rid
         }
       })

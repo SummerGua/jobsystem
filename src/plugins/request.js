@@ -11,8 +11,8 @@ export function getMessageSenders(){
   return vue.$http.get("/users/getMessageSenders")
 }
 
-export function getReceivedResumes(params){
-  return vue.$http.get('/users/getReceivedResumes?'+params)
+export function getReceivedResumes(query){
+  return vue.$http.get('/users/getReceivedResumes?'+query)
 }
 
 export function sendMessage(x){

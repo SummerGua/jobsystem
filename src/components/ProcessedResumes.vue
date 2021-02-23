@@ -92,7 +92,7 @@ export default {
     seeResume(x){
       this.$router.push({
         name: 'Preview',
-        params: {
+        query: {
           rid: this.wantData[x].rid
         }
       })
@@ -100,7 +100,7 @@ export default {
     seeRubbishResume(x){
       this.$router.push({
         name: 'Preview',
-        params: {
+        query: {
           rid: this.rubbishData[x].rid
         }
       })

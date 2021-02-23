@@ -21,15 +21,14 @@
           <el-table-column prop="salary" label="薪水"></el-table-column>
           <el-table-column prop="diploma" label="学历要求"></el-table-column>
           <el-table-column prop="exp" label="经验要求"></el-table-column>
+          <el-table-column prop="upTime" width="170" label="上传时间"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button @click="removeJob(scope.$index)" type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
-            
         </el-table>
       </div>
-
     </div>
   </div>
 </template>
@@ -46,6 +45,8 @@ export default {
         data => {
           let datas = data.data.data
           for(let i=0;i<datas.length;i++){
+            datas[i].upTime = datas[i].upTime.split('.')[0]
+            datas[i].upTime = datas[i].upTime.replace(/T/,' ')
             this.$set(this.jobData,i,datas[i])
           }
           console.log(this.jobData)
@@ -62,6 +63,7 @@ export default {
         this.$http.post('/users/removeJob', {jid: this.jobData[x].jid}).then(
           res => {
             if(res.data.code == 0){
+              this.getJobData()
               this.$message.success("成功删除")
             }else{
               this.$message.error("失败")

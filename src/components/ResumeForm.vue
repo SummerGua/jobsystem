@@ -291,8 +291,8 @@ export default {
   beforeCreate () {
 	// 修改背景色
     document.querySelector('body').setAttribute('style', 'background-color:#f1f1f1')
-    if(this.$route.params.rid){
-      let rid = this.$route.params.rid
+    if(this.$route.query.rid){
+      let rid = this.$route.query.rid
       this.$http.post("users/getEditResume",{rid: rid}).then(
         data => {
           console.log(data.data)

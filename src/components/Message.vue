@@ -101,7 +101,6 @@ export default {
                   upTime: messages[i].time
               })
             }else{
-
               this.$set(this.texts[id],i,{
                   mine: 0,
                   content: messages[i].message,
@@ -114,7 +113,6 @@ export default {
       )
     },
     sendMessages(){
-
       if(this.nameList.length == 0) return false
       if(this.toSendMes[this.isActive].split(' ').join('') !== ""
       &&
@@ -126,7 +124,6 @@ export default {
             message: this.toSendMes[this.isActive]
           }
         }
-        
         sendMessage(req).then(res => {
           if(res.code==0) this.$message.success('发送成功')
         })
@@ -154,12 +151,11 @@ export default {
       }
     }
   },
-  created(){
+  beforeCreate(){
     getMessageSenders().then(res=>{
       this.texts = []
       this.toSendMes = []
       if(res.data.code==0){
-        console.log(res.data.data)
         for(let i=0;i<res.data.data.length;i++){
           this.$set(this.nameList,i,{
               id: i,
@@ -170,27 +166,26 @@ export default {
           this.$set(this.texts,i,[])
           this.$set(this.toSendMes,i,'')
         }
+        
+        
+        
       }
     }).catch(err=>{
       alert("获取聊天失败"+err)
     })
-    
   },
   mounted(){
     setTimeout(() => {
       if(this.nameList[0]){
         this.getMessage(this.nameList[0].uid, 0)
       }
-      
-    }, 50);//确保created结束
-    
+    }, 50)
   },
   updated(){
     this.$refs.win.scrollTop = this.$refs.win.scrollHeight
   },
   computed:{
     inputLength: function(){
-      
       return this.toSendMes[this.isActive]?this.toSendMes[this.isActive].length : 0
     }
   }

@@ -1,19 +1,14 @@
 <template>
   <div class="container">
     <div class="search">
-      <div @click="changeIsCom()" class="choose">
-        <div class="to-com" :class="[isCom?'active':'noactive']">职位</div>
-        <div class="to-job" :class="[!isCom?'active':'noactive']">公司</div>
-      </div>
-      <el-input class="input-area" :placeholder="placeholder[0]" prefix-icon="el-icon-search" v-model="search"></el-input>
+      <el-input class="input-area" disabled :placeholder="placeholder[0]" prefix-icon="el-icon-search" v-model="search"></el-input>
       <div class="enter">确定</div>
     </div>
     <div class="title">
-      <a v-show="isCom">热门公司</a>
-      <a v-show="!isCom">热门职位</a>
+      <a>热门公司</a>
     </div>
     <div class="all-companies">
-      <div class="one-company" v-for="item in coms" :key="item.cid">
+      <div @click="goCompany(item.cid)" class="one-company" v-for="item in coms" :key="item.cid">
         <div class="pic">
           <img :src="item.src">
         </div>
@@ -23,12 +18,6 @@
         </div>
       </div>
     </div>
-    
-    <!-- <div class="jobs">
-      <div class="job-box" v-for="item in jobs" :key="item.id">
-
-      </div>
-    </div> -->
   </div>
 </template>
 <script>
@@ -36,27 +25,30 @@ export default {
   data(){
     return{
       search: '',
-      isCom: true,
       placeholder: ['请输入你感兴趣的公司','请输入你感兴趣的职位'],
       coms:[]
     }
   },
   methods:{
-    changeIsCom(){
-      this.isCom = !this.isCom
-      let tmp = this.placeholder[0]
-      this.placeholder[0] = this.placeholder[1]
-      this.placeholder[1] = tmp
+    goCompany(x){
+      this.$router.push({
+        name: 'CompanyInfo',
+        query: {
+          cid: x
+        }
+      })
     }
   },
   beforeCreate(){
     this.$http.get("public/getComs").then(
-        res=>{
-          for(let i=0;i<res.data.data.length;i++)
-            this.$set(this.coms,i,res.data.data[i])
-          }
-        )
-  }
+      res=>{
+        for(let i=0;i<res.data.data.length;i++){
+          this.$set(this.coms,i,res.data.data[i])
+        }
+      }
+    )
+  },
+  
 }
 </script>
 <style scoped>
@@ -68,23 +60,14 @@ export default {
   font-size: 14px;
   margin: 0 auto;
 }
-.choose{
-  display: flex;
-  line-height: 40px;
-  border: #409eff 1px solid;
-  border-radius: 3px;
-}
-.choose:hover{
-  cursor: pointer;
-}
 .enter{
   width: 80px;
   line-height:40px;
   background-color: #e7e7e7;
 }
-.enter:hover{
+/* .enter:hover{
   cursor: pointer;
-}
+} */
 .input-area input{
   border-radius: 0;
 }

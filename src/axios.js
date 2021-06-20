@@ -3,7 +3,7 @@ import router from './router'
 
 let instance = axios.create({
   //baseURL: '/',  //mock用
-  baseURL: 'http://127.0.0.1:3000',
+  baseURL: 'http://localhost:3000',
   timeout: 5000, //请求超时时间
   //withCredentials: true, //跨域
 })

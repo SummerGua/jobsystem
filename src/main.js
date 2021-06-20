@@ -7,12 +7,18 @@ import instance from './axios'
 import store from './store/store.js'
 import guards from './router/guards.js'
 import VueClipboard from 'vue-clipboard2'
+import socketio from 'socket.io-client'
+// import VueSocketio from 'vue-socket.io'
+
 Vue.use(VueClipboard)
 
 //require('./mock')
 
 
 Vue.prototype.$http = instance
+Vue.prototype.$io = socketio('http://localhost:3000',{
+  transports: ['websocket']
+})
 Vue.config.productionTip = false
 
 export default new Vue({

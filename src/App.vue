@@ -15,6 +15,7 @@ export default {
   components: {
     Nav
   },
+
   mounted(){
     if(sessionStorage.getItem('token')){
       this.$store.commit('storeLogin')

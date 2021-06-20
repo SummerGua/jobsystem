@@ -69,14 +69,15 @@
 
 </template>
 <script>
+import {dateFormat} from '../plugins/formatTime'
 import {getMessageSenders, sendMessage} from '../plugins/request'
 export default {
   data(){
     return{
       nameList: [],
       isActive: 0,
-      toSendMes: [''],
-      texts:['']
+      toSendMes: [''], //发送框
+      texts:[''] //聊天记录
     }
   },
   methods: {
@@ -98,13 +99,13 @@ export default {
               this.$set(this.texts[id],i,{
                   mine: 1,
                   content: messages[i].message,
-                  upTime: messages[i].time
+                  upTime: messages[i].time.split('T')[0]
               })
             }else{
               this.$set(this.texts[id],i,{
                   mine: 0,
                   content: messages[i].message,
-                  upTime: messages[i].time
+                  upTime: messages[i].time.split('T')[0]
               })
             }
           }
@@ -120,29 +121,28 @@ export default {
         let req={}
         if(this.nameList[this.isActive].uid){
           req = {
+            //不用传from因为可以解析出cookie里的信息
             toUid: this.nameList[this.isActive].uid,
             message: this.toSendMes[this.isActive]
           }
         }
+        this.$io.emit('sendMsg', {
+          //这边是用到socketio，服务器那边没办法用jwtmw了
+          from: sessionStorage.getItem('uid'),
+          to: this.nameList[this.isActive].uid,
+          message: this.toSendMes[this.isActive]
+        })
         sendMessage(req).then(res => {
-          if(res.code==0) this.$message.success('发送成功')
+          if(res.data.code==0) this.$message.success('发送成功')
         })
         let time = new Date()
-        let month = time.getMonth()+1
-        let day = time.getDate()
-        let hour = time.getHours()
-        let min = time.getMinutes()
-        let sec = time.getSeconds()
-        if(month.toString().length<2) month = 0+''+month
-        if(day.toString().length<2) day = 0+''+day
-        if(hour.toString().length<2) hour = 0+''+hour
-        if(min.toString().length<2) min = 0+''+min
-        if(sec.toString().length<2) sec = 0+''+sec
+        time = dateFormat('YYYY-mm-dd HH:MM', time)
+        console.log(time)
         this.texts[this.isActive].push(
           {
             mine:1,
             content:this.toSendMes[this.isActive],
-            upTime: time.getFullYear()+'-'+month+'-'+day+' '+time.getHours()+':'+time.getMinutes()+':'+time.getSeconds()
+            upTime: time
           }
         )
         this.$set(this.toSendMes,this.isActive,'') // 输入框清空
@@ -152,6 +152,21 @@ export default {
     }
   },
   beforeCreate(){
+    this.$io.on('receive', data=>{
+        let i = -1
+        for(let j=0;j<this.nameList.length;j++) {
+          if(Number(this.nameList[j].uid) === Number(data.from)){
+            i = this.nameList[j].id
+          }else{
+            continue
+          }
+        }
+        this.texts[i].push({
+          mine: data.from===sessionStorage.getItem('uid') ? 1 : 0,
+          content: data.message,
+          upTime: data.upTime.split('T')[0]
+        })
+      })
     getMessageSenders().then(res=>{
       this.texts = []
       this.toSendMes = []
@@ -175,6 +190,10 @@ export default {
     })
   },
   mounted(){
+    const id = sessionStorage.getItem('uid')
+    if(id) {
+      this.$io.emit('login', {id: id})
+    }
     setTimeout(() => {
       if(this.nameList[0]){
         this.getMessage(this.nameList[0].uid, 0)
@@ -198,6 +217,9 @@ export default {
   font-weight: 700;
   height: calc(100vh - 49px);
   color: #666;
+}
+.msg-list::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }
 .msg-container{
   display: flex;

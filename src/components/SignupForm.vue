@@ -17,7 +17,7 @@
       <el-form-item label="真实姓名" prop="realName">
         <el-input v-model="ruleForm.realName"></el-input>
       </el-form-item>
-      <el-form-item v-show="!role" label="公司名称" prop="companyName">
+      <el-form-item v-show="!role" label="公司代码" prop="companyName">
         <el-input v-model="ruleForm.companyName"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
@@ -73,7 +73,7 @@ export default {
           { validator: validatePass, trigger: 'blur' }
         ],
         companyName: [
-          { required: true, message: '请输入公司名称', trigger: 'blur' },
+          { required: true, message: '请输入公司代码', trigger: 'blur' },
         ]
       },
     }

@@ -49,7 +49,6 @@ export default {
             datas[i].upTime = datas[i].upTime.replace(/T/,' ')
             this.$set(this.jobData,i,datas[i])
           }
-          console.log(this.jobData)
         }
       )
     },

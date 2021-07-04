@@ -1,8 +1,11 @@
 import Vue from 'vue'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 import { Table,Pagination,Button,Dialog,MessageBox,Form,FormItem,
-  Input,Alert,Message,Radio,DatePicker,Select,Option,Switch,Dropdown,
-  DropdownItem,DropdownMenu,TableColumn,Rate } from 'element-ui'
+  Input,Alert,Message,Radio,RadioButton,DatePicker,Select,Option,Switch,Dropdown,
+  DropdownItem,DropdownMenu,TableColumn,Rate, RadioGroup, Upload } from 'element-ui'
 
+Vue.use(mavonEditor)
 Vue.use(TableColumn)
 Vue.use(Table)
 Vue.use(Pagination)
@@ -21,7 +24,9 @@ Vue.use(DropdownItem)
 Vue.use(DropdownMenu)
 Vue.use(Dialog)
 Vue.use(Rate)
-
+Vue.use(RadioGroup)
+Vue.use(RadioButton)
+Vue.use(Upload)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

@@ -100,6 +100,46 @@ const routes = [
     path: '/companyInfo',
     name: 'CompanyInfo',
     component: () => import('../views/CompanyInfo.vue')
+  },
+  {
+    path: '/bbs',
+    name: 'Bbs',
+    meta: {
+      needLogin: true,
+    },
+    component: () => import('../views/Bbs.vue')
+  },
+  {
+    path: '/post',
+    name: 'Post',
+    meta: {
+      needLogin: true,
+    },
+    component: () => import('../views/Post.vue')
+  },
+  {
+    path: '/newPost',
+    name: 'NewPost',
+    meta: {
+      needLogin: true
+    },
+    component: () => import('../views/NewPost.vue')
+  },
+  {
+    path: '/myCRs', //我的收藏回复等
+    name: 'MyCRs',
+    meta: {
+      needLogin: true
+    },
+    component: () => import('../views/MyCRs.vue')
+  },
+  {
+    path: '/myInfo',
+    name: 'MyInfo',
+    meta: {
+      needLogin: true
+    },
+    component: () => import('../views/MyInfo.vue')
   }
 ]
 

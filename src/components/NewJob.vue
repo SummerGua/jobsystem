@@ -86,8 +86,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if(valid){
           this.$http.post('/users/newJob', this.form).then(
-            data =>{
-              console.log(data.data)
+            data => {
               for(let key in this.form){
                 this.form[key] = ''
               }

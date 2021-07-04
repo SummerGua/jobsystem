@@ -8,13 +8,12 @@ import store from './store/store.js'
 import guards from './router/guards.js'
 import VueClipboard from 'vue-clipboard2'
 import socketio from 'socket.io-client'
-// import VueSocketio from 'vue-socket.io'
+import 'font-awesome/css/font-awesome.min.css'
+
 
 Vue.use(VueClipboard)
 
 //require('./mock')
-
-
 Vue.prototype.$http = instance
 Vue.prototype.$io = socketio('http://localhost:3000',{
   transports: ['websocket']

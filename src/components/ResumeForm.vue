@@ -132,7 +132,7 @@
   </div>
       </div>
     </div>
-    <Preview @close="preview()" :options="options" :form="dataForm" v-show="pre" />
+    <Preview v-on:close="preview()" :options="options" :form="dataForm" v-show="pre" />
   </div>
   
 </template>
@@ -291,14 +291,14 @@ export default {
   beforeCreate () {
 	// 修改背景色
     document.querySelector('body').setAttribute('style', 'background-color:#f1f1f1')
-    if(this.$route.query.rid){
-      let rid = this.$route.query.rid
-      this.$http.post("users/getEditResume",{rid: rid}).then(
-        data => {
-          console.log(data.data)
-        }
-      )
-    }
+    // if(this.$route.query.rid){
+    //   let rid = this.$route.query.rid
+    //   this.$http.post("users/getEditResume",{rid: rid}).then(
+    //     data => {
+    //       console.log(data.data)
+    //     }
+    //   )
+    // }
   },
   beforeDestroy () {
 	// 销毁背景色

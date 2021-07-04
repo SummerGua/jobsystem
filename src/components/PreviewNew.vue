@@ -152,9 +152,6 @@ export default {
       this.download(document.querySelector('.detail'),this.form.name)
     }
   },
-  mounted(){
-    console.log(this.form.project)
-  }
 }
 </script>
 <style scoped>

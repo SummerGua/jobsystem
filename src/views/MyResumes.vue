@@ -13,7 +13,7 @@ export default {
 }
 </script>
 <style scoped>
-.view{
-  height: cacl(100vh-49px);
+.view {
+  height: calc(100vh - 49px);
 }
 </style>

@@ -1,38 +1,36 @@
 <template>
-
   <div class="container">
     <div class="msg-container">
     <div class="side-bar">
       <div class="title">消息中心</div>
       <ul>
-        <li class="font-active">我的消息</li>
-        <li v-if="this.$store.state.isStu==1">收到的赞</li>
-        <li v-if="this.$store.state.isStu==1">回复我的</li>
-        <li>系统通知</li>
+        <li @click="leftActive=1" :class="{'font-active':leftActive===1}">我的消息</li>
+        <li @click="leftActive=2, getLikeAndReplyMe" :class="{'font-active':leftActive===2}">收到的赞</li>
+        <li @click="leftActive=3, getLikeAndReplyMe" :class="{'font-active':leftActive===3}">回复我的</li>
+        <li @click="leftActive=4" :class="{'font-active':leftActive===4}">系统通知</li>
       </ul>
     </div>
     <div class="right-part">
       <div class="msg-top-bar">
         <span>我的消息</span>
-        <span>设置</span>
       </div>
-      <div class="msg-box">
+      <div v-show="leftActive===1" class="msg-box">
         <div class="left">
         <div class="recent-msg">
           <span>近期消息</span>
         </div>
         <div v-cloak v-for="(item) in nameList" :key="item.id" :class="{active:item.id===isActive}" @click="changeClass(item.id);getMessage(item.uid,item.id)" class="list-item">
           <div class="left-imgs">
-            <img :src="item.pic">
+            <img width="42px" height="42px" :src="item.pic">
           </div>
-          <a v-if="item.realName" class="left-names">
-            {{ item.realName }}
+          <a v-if="item.name" class="left-names">
+            {{ item.name }}
           </a>
         </div>
         </div>
-        <div class="right">
+        <div class="right" v-if="loadover">
           <div class="msg-title">
-            <span>{{isActive}}</span>
+            <span>{{nameList[isActive].name}}</span>
           </div>
           <!-- 聊天内容 -->
           <div ref="win" class="msg-list">
@@ -41,7 +39,7 @@
               <div class="line" v-if="!text.mine">
                 <div class="friend">{{text.content}}</div>
                 <div class="uptimeL">{{text.upTime}}</div>
-                </div>
+              </div>
               <div class="line" v-else>
                 <div class="me">{{text.content}}</div>
                 <div class="uptimeR">{{text.upTime}}</div>
@@ -62,22 +60,42 @@
           </div>
         </div>
       </div>
-      
+      <el-table border stripe width="100%" :data="likeMeData" v-show="leftActive===2" class="likeme">
+        <el-table-column prop="date" label="日期"></el-table-column>
+        <el-table-column prop="title" label="帖子标题"></el-table-column>
+        <el-table-column prop="name" label="点赞人"></el-table-column>
+      </el-table>
+      <el-table border stripe width="100%" :data="replyMeData" v-show="leftActive===3" class="replyme">
+        <el-table-column prop="date" label="日期"></el-table-column>
+        <el-table-column prop="title" label="帖子标题"></el-table-column>
+        <el-table-column prop="content" label="评论内容"></el-table-column>
+        <el-table-column prop="name" label="评论人"></el-table-column>
+      </el-table>
+      <el-table border stripe width="100%" :data="systemNote" v-show="leftActive===4" class="replyme">
+        <el-table-column></el-table-column>
+        <el-table-column></el-table-column>
+        <el-table-column></el-table-column>
+      </el-table>
     </div>
     </div>
   </div>
 
 </template>
 <script>
-import {dateFormat} from '../plugins/formatTime'
-import {getMessageSenders, sendMessage} from '../plugins/request'
+import { dateFormat } from '../plugins/formatTime'
+import { getMessageSenders, sendMessage } from '../plugins/request'
 export default {
   data(){
     return{
+      loadover: false,
       nameList: [],
+      leftActive: 1,
       isActive: 0,
       toSendMes: [''], //发送框
-      texts:[''] //聊天记录
+      texts:[''], //聊天记录
+      likeMeData: [],
+      replyMeData: [],
+      systemNote: []
     }
   },
   methods: {
@@ -85,39 +103,39 @@ export default {
       this.isActive = i
     },
     getMessage(uid,id){
+      this.loadover = false
       this.$http.post('/users/getMessage', {hisuid:uid}).then(
         data=>{
           let messages = data.data.data
           if(data.data.code==0){
             for(let i=0;i<messages.length;i++){
-            let myuid = sessionStorage.getItem('uid')
-            if(messages[i].time){
-              messages[i].time = messages[i].time.split('.')[0]
-              messages[i].time = messages[i].time.replace('T', ' ')
+              let myuid = sessionStorage.getItem('uid')
+              if(messages[i].time){
+                messages[i].time = messages[i].time.split('.')[0]
+                messages[i].time = messages[i].time.replace('T', ' ')
+              }
+              if(messages[i].fromUid==myuid){
+                this.$set(this.texts[id],i,{
+                    mine: 1,
+                    content: messages[i].message,
+                    upTime: messages[i].time.split('T')[0]
+                })
+              }else{
+                this.$set(this.texts[id],i,{
+                    mine: 0,
+                    content: messages[i].message,
+                    upTime: messages[i].time.split('T')[0]
+                })
+              }
             }
-            if(messages[i].fromUid==myuid){
-              this.$set(this.texts[id],i,{
-                  mine: 1,
-                  content: messages[i].message,
-                  upTime: messages[i].time.split('T')[0]
-              })
-            }else{
-              this.$set(this.texts[id],i,{
-                  mine: 0,
-                  content: messages[i].message,
-                  upTime: messages[i].time.split('T')[0]
-              })
-            }
-          }
+            this.loadover = true
           }
         }
       )
     },
     sendMessages(){
       if(this.nameList.length == 0) return false
-      if(this.toSendMes[this.isActive].split(' ').join('') !== ""
-      &&
-      this.toSendMes[this.isActive].split('\n').join('')!==""){
+      if(this.toSendMes[this.isActive].split(' ').join('').split('\n').join('') !== ""){
         let req={}
         if(this.nameList[this.isActive].uid){
           req = {
@@ -137,7 +155,6 @@ export default {
         })
         let time = new Date()
         time = dateFormat('YYYY-mm-dd HH:MM', time)
-        console.log(time)
         this.texts[this.isActive].push(
           {
             mine:1,
@@ -147,8 +164,27 @@ export default {
         )
         this.$set(this.toSendMes,this.isActive,'') // 输入框清空
       }else{
-        alert("输入为空无法发送")
+        this.$message.warning("输入为空哦~")
       }
+    },
+    getLikeAndReplyMe() {
+      this.$http.get('/bbs/likeReplyMe').then(
+        res => {
+          let { data }=  res.data
+          if(data[0] !== undefined) {
+            for(let i=0; i<data[0].length; i++) {
+              data[0][i].date = data[0][i].date.split('.')[0].replace('T', ' ')
+            }
+          }
+          if(data[1] !== undefined) {
+            for(let i=0; i<data[1].length; i++) {
+              data[1][i].date = data[1][i].date.split('.')[0].replace('T', ' ')
+            }
+          }
+          this.likeMeData = data[0]
+          this.replyMeData = data[1]
+        }
+      )
     }
   },
   beforeCreate(){
@@ -176,14 +212,12 @@ export default {
               id: i,
               pic: res.data.data[i].pic,
               realName: res.data.data[i].realName,
-              uid: res.data.data[i].uid
+              uid: res.data.data[i].uid,
+              name: res.data.data[i].name
             })
           this.$set(this.texts,i,[])
           this.$set(this.toSendMes,i,'')
         }
-        
-        
-        
       }
     }).catch(err=>{
       alert("获取聊天失败"+err)
@@ -194,6 +228,7 @@ export default {
     if(id) {
       this.$io.emit('login', {id: id})
     }
+    this.getLikeAndReplyMe()
     setTimeout(() => {
       if(this.nameList[0]){
         this.getMessage(this.nameList[0].uid, 0)
@@ -201,7 +236,9 @@ export default {
     }, 50)
   },
   updated(){
-    this.$refs.win.scrollTop = this.$refs.win.scrollHeight
+    if(this.$refs?.win) {
+      this.$refs.win.scrollTop = this.$refs.win.scrollHeight
+    }
   },
   computed:{
     inputLength: function(){
@@ -257,6 +294,7 @@ li:hover{
   padding: 10px 10px 0;
 }
 .msg-top-bar{
+  width: 984px;
   padding: 0 16px;
   height: 42px;
   display: flex;

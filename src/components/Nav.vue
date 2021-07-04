@@ -1,5 +1,5 @@
 <template>
-  <div class="nav">
+  <div id="top" class="nav">
     <div class="nav-inner">
       <h2 class="logo">
         <router-link to="/"><a>招聘系统</a></router-link>
@@ -11,6 +11,7 @@
       </div>
       
       <div v-show="this.$store.state.isLogin&&(this.$store.state.isStu==1)" class="info">
+        <router-link to="/bbs"><a>讨论区</a></router-link>
         <router-link to="/message"><a>消息</a></router-link>
         <router-link to="/upload"><a>上传简历</a></router-link>
         <div class="my">
@@ -22,6 +23,11 @@
               <router-link to="myresumes">
                 <el-dropdown-item class="item">
                 我的简历
+                </el-dropdown-item>
+              </router-link>
+              <router-link to="myInfo">
+                <el-dropdown-item class="item">
+                修改资料
                 </el-dropdown-item>
               </router-link>
             </el-dropdown-menu>

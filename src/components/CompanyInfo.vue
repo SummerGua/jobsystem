@@ -110,7 +110,7 @@ export default {
 
     },
     send(){
-      this.$http.post('/users/sendMessage',{message: this.content,toUid: this.toUid}).then(
+      this.$http.post('/users/sendMessage', { message: this.content,toUid: this.toUid }).then(
         info => {
           if(info.data.code==0) this.$message.success("发送成功")
         }

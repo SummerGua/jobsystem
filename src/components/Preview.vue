@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <el-button class="btn" type="primary" @click="noPre">返回</el-button>
+    <el-button class="btn" type="primary" @click="close">返回</el-button>
     <div class="detail">
       <div class="name">{{ form.name }}</div>
     <div class="item sex">{{ form.realSex[form.sex] }}</div>
@@ -64,11 +64,11 @@ export default {
     options: {
       type: Array,
       required: true
-    }
+    },
   },
   methods: {
-    noPre(){
-      this.$router.go(-1)
+    close(){
+      this.$emit('close')
     }
   }
 }
